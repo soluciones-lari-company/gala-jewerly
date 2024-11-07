@@ -5,6 +5,12 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JewerlyGala.API", "JewerlyGala.API\JewerlyGala.API.csproj", "{2EE46B79-4F8A-4C24-B19B-2E7056BD9A03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JewerlyGala.Domain", "JewerlyGala.Domain\JewerlyGala.Domain.csproj", "{18A32FE2-8C34-4031-8A39-06BBEBC6D71F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JewerlyGala.Application", "JewerlyGala.Application\JewerlyGala.Application.csproj", "{D4B6B81F-B266-42CA-8BBE-A47A9DAAA318}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JewerlyGala.Infrastructure", "JewerlyGala.Infrastructure\JewerlyGala.Infrastructure.csproj", "{4935FE53-BBD6-4DAF-87D1-E1B614D86C28}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,8 +21,23 @@ Global
 		{2EE46B79-4F8A-4C24-B19B-2E7056BD9A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EE46B79-4F8A-4C24-B19B-2E7056BD9A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EE46B79-4F8A-4C24-B19B-2E7056BD9A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18A32FE2-8C34-4031-8A39-06BBEBC6D71F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18A32FE2-8C34-4031-8A39-06BBEBC6D71F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18A32FE2-8C34-4031-8A39-06BBEBC6D71F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18A32FE2-8C34-4031-8A39-06BBEBC6D71F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4B6B81F-B266-42CA-8BBE-A47A9DAAA318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4B6B81F-B266-42CA-8BBE-A47A9DAAA318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4B6B81F-B266-42CA-8BBE-A47A9DAAA318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4B6B81F-B266-42CA-8BBE-A47A9DAAA318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4935FE53-BBD6-4DAF-87D1-E1B614D86C28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4935FE53-BBD6-4DAF-87D1-E1B614D86C28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4935FE53-BBD6-4DAF-87D1-E1B614D86C28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4935FE53-BBD6-4DAF-87D1-E1B614D86C28}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {07117F98-9E49-4405-9D64-39A2300D3915}
 	EndGlobalSection
 EndGlobal
