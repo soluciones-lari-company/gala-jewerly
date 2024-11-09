@@ -9,3 +9,11 @@ Accept: application/json
 ProjectUrl: {{$}}
 
 ###
+
+GET {{JewerlyGala.API_HostAddress}}/api/item-model
+Accept: application/json
+
+###
+
+GET {{JewerlyGala.API_HostAddress}}/api/item-model/1
+Accept: application/json
