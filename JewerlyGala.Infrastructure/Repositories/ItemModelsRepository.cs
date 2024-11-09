@@ -18,7 +18,22 @@ namespace JewerlyGala.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
+        public Task AddFeatureAsync(int id, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task AddValueToFeature(int id, string value)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<int> Create(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> CreateAsync(string name)
         {
             throw new NotImplementedException();
         }
@@ -55,6 +70,11 @@ namespace JewerlyGala.Infrastructure.Repositories
 
 
             return true;
+        }
+
+        public Task<bool> UpdateAsync(ItemModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }
