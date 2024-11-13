@@ -1,12 +1,13 @@
-﻿using JewerlyGala.Application.ItemModels;
-using JewerlyGala.Domain.Repositories;
+﻿using MediatR;
+using JewerlyGala.Application.ItemModels;
+using JewerlyGala.Application.ItemModels.Commands.CreateItemModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewerlyGala.API.Controllers
 {
-    [ApiController]
-    [Route("api/item-model")]
-    public class ItemModelController : ControllerBase
+    //[ApiController]
+    //[Route("api/item-model")]
+    public class ItemModelController : ApiControllerBase
     {
         private IItemModelService itemModelService;
 
@@ -34,6 +35,14 @@ namespace JewerlyGala.API.Controllers
             {
                 return Ok(model);
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateModel(CreateItemModelCommand command)
+        {
+            var idNewItemModel = await Mediator.Send(command);
+
+            return Ok(idNewItemModel);
         }
     }
 }

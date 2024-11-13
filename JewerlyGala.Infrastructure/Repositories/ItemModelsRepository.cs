@@ -28,9 +28,13 @@ namespace JewerlyGala.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<int> Create(string name)
+        public async Task<int> Create(string name)
         {
-            throw new NotImplementedException();
+            var newitemModel = new ItemModel { Name  = name };
+
+            await dbContext.SaveChangesAsync();
+
+            return newitemModel.Id;
         }
 
         public Task<int> CreateAsync(string name)
@@ -48,8 +52,8 @@ namespace JewerlyGala.Infrastructure.Repositories
         public async Task<ItemModel?> GetByIdAsync(int id)
         {
             var model = await this.dbContext.ItemModels
-                .Include(x => x.Features)
-                .ThenInclude(x => x.Values)
+                //.Include(x => x.Features)
+                //.ThenInclude(x => x.Values)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if(model == null)

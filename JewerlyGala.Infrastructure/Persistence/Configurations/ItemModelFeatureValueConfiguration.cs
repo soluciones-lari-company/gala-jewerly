@@ -14,15 +14,15 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
 
             builder.Property(e => e.Id).UseIdentityColumn();
 
-            builder.Property(t => t.IdFeature).IsRequired();
+            //builder.Property(t => t.IdFeature).IsRequired();
 
             builder.Property(t => t.ValueDetails)
                 .HasMaxLength(200)
                 .IsRequired();
 
-            builder.HasOne(t => t.Feature)
-                .WithMany(t => t.Values)
-                .HasForeignKey(t => t.IdFeature);
+            //builder.HasOne(t => t.Feature)
+            //    .WithMany(t => t.Values)
+            //    .HasForeignKey(t => t.IdFeature);
         }
     }
 }

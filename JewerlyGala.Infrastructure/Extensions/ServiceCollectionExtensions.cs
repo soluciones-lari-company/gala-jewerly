@@ -12,7 +12,12 @@ namespace JewerlyGala.Infrastructure.Extensions
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
             string connectionString = configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<JewerlyDbContext>(options => options.UseSqlServer(connectionString));
+            //connectionString = "Server=(localdb)\\mssqllocaldb;Database=JewerlyGala;Trusted_Connection=True;MultipleActiveResultSets=true;";
+            
+            
+            services.AddDbContext<JewerlyDbContext>(options =>
+                options.UseSqlServer(connectionString,
+                    builder => builder.MigrationsAssembly(typeof(JewerlyDbContext).Assembly.FullName)));
 
             services.AddScoped<IItemModelsRepository, ItemModelsRepository>();
         }
