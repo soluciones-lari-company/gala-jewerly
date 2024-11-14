@@ -16,8 +16,9 @@ namespace JewerlyGala.Infrastructure.Extensions
             
             
             services.AddDbContext<JewerlyDbContext>(options =>
-                options.UseSqlServer(connectionString,
-                    builder => builder.MigrationsAssembly(typeof(JewerlyDbContext).Assembly.FullName)));
+                options.UseSqlServer(connectionString, builder => builder.MigrationsAssembly(typeof(JewerlyDbContext).Assembly.FullName))
+                .EnableSensitiveDataLogging() // allows to show details for parameters
+            );
 
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
         }
