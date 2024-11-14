@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JewerlyGala.Application.Dtos;
+using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -32,6 +33,12 @@ namespace JewerlyGala.Application.ItemModels.Queries.GetModelById
             logger.LogInformation($"gettin model {request.IdModel}");
 
             var model = await itemModelRepository.GetByIdAsync(request.IdModel);
+
+            if(model == null)
+            {
+                throw new NotFoundException($"Model with Id: {request.IdModel} does not exists");
+            }
+
 
             var modelDto = mapper.Map<ItemModelDto>(model);
 

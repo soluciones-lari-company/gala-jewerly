@@ -3,6 +3,7 @@ using JewerlyGala.Application.ItemModels.Commands.CreateItemModel;
 using Microsoft.AspNetCore.Mvc;
 using JewerlyGala.Application.ItemModels.Queries.GetAllModels;
 using JewerlyGala.Application.ItemModels.Queries.GetModelById;
+using JewerlyGala.Application.Dtos;
 
 namespace JewerlyGala.API.Controllers
 {
@@ -12,20 +13,21 @@ namespace JewerlyGala.API.Controllers
     {
         private IMediator mediator;
 
+
         public ItemModelController(IMediator mediator)
         {
             this.mediator = mediator;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<ActionResult<IEnumerable<ItemModelDto>>> GetAll()
         {
             var models = await mediator.Send(new GetAllModelsQuery());
             return Ok(models);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<ActionResult<ItemModelDto>> GetById(int id)
         {
             var model = await mediator.Send(new GetModelByIdQuery() { IdModel = id });
             if(model == null)

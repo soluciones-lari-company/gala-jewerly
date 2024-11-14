@@ -15,7 +15,7 @@ Accept: application/json
 
 ###
 
-GET {{JewerlyGala.API_HostAddress}}/api/ItemModel/1
+GET {{JewerlyGala.API_HostAddress}}/api/ItemModel/100
 Accept: application/json
 
 ###

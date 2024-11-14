@@ -2,6 +2,7 @@ using JewerlyGala.Infrastructure.Extensions;
 using JewerlyGala.Application.Extensions;
 using System.Text.Json.Serialization;
 using Serilog;
+using JewerlyGala.API.Middlewares;
 
 
 //using ZymLabs.NSwag.FluentValidation;
@@ -37,6 +38,8 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<ErrorHandlingMiddle>();
+
 //builder.Services.AddScoped<FluentValidationSchemaProcessor>(provider =>
 //{
 //    var validationRules = provider.GetService<IEnumerable<FluentValidationRule>>();
@@ -49,6 +52,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<ErrorHandlingMiddle>();
+
 
 app.UseSerilogRequestLogging();
 
