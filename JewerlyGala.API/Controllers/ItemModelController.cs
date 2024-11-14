@@ -1,7 +1,8 @@
 ﻿using MediatR;
-using JewerlyGala.Application.ItemModels;
 using JewerlyGala.Application.ItemModels.Commands.CreateItemModel;
 using Microsoft.AspNetCore.Mvc;
+using JewerlyGala.Application.ItemModels.Queries.GetAllModels;
+using JewerlyGala.Application.ItemModels.Queries.GetModelById;
 
 namespace JewerlyGala.API.Controllers
 {
@@ -9,24 +10,24 @@ namespace JewerlyGala.API.Controllers
     //[Route("api/item-model")]
     public class ItemModelController : ApiControllerBase
     {
-        private IItemModelService itemModelService;
+        private IMediator mediator;
 
-        public ItemModelController(IItemModelService itemModelService)
+        public ItemModelController(IMediator mediator)
         {
-            this.itemModelService = itemModelService;
+            this.mediator = mediator;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var models = await this.itemModelService.GetAllItemModelsAsync();
+            var models = await mediator.Send(new GetAllModelsQuery());
             return Ok(models);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
-            var model = await this.itemModelService.GetByIdAsync(id);
+            var model = await mediator.Send(new GetModelByIdQuery() { IdModel = id });
             if(model == null)
             {
                 return NotFound();

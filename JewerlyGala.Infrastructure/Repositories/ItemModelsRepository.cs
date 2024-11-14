@@ -60,6 +60,11 @@ namespace JewerlyGala.Infrastructure.Repositories
             return model;
         }
 
+        public Task GetByIdAsync(object id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> UpdateAsync(int id, string name)
         {
             var model = await dbContext.ItemModels

@@ -9,5 +9,6 @@ namespace JewerlyGala.Domain.Repositories
         Task<int> CreateAsync(string name);
         Task<bool> UpdateAsync(int id, string name);
         Task<int> ExistsByName(string name);
+        Task GetByIdAsync(object id);
     }
 }
