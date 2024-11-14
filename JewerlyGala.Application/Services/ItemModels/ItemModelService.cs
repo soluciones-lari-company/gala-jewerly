@@ -8,12 +8,12 @@ namespace JewerlyGala.Application.Services.ItemModels
 {
     public class ItemModelService : IItemModelService
     {
-        private IItemModelsRepository itemModelsRepository;
+        private IItemModelRepository itemModelsRepository;
         private ILogger<ItemModelService> logger;
         private IMapper mapper;
 
         public ItemModelService(
-            IItemModelsRepository itemModelsRepository, 
+            IItemModelRepository itemModelsRepository, 
             ILogger<ItemModelService> logger,
             IMapper mapper)
         {

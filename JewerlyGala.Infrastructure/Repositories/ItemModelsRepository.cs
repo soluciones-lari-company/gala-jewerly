@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace JewerlyGala.Infrastructure.Repositories
 {
-    public class ItemModelsRepository : IItemModelsRepository
+    public class ItemModelsRepository : IItemModelRepository
     {
         private JewerlyDbContext dbContext;
 
@@ -18,28 +18,26 @@ namespace JewerlyGala.Infrastructure.Repositories
             this.dbContext = dbContext;
         }
 
-        public Task AddFeatureAsync(int id, string name)
+        public async Task<int> CreateAsync(string name)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task AddValueToFeature(int id, string value)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<int> Create(string name)
-        {
-            var newitemModel = new ItemModel { Name  = name };
+            var newitemModel = new ItemModel { Name = name };
 
             await dbContext.SaveChangesAsync();
 
             return newitemModel.Id;
         }
 
-        public Task<int> CreateAsync(string name)
+        public async Task<int> ExistsByName(string name)
         {
-            throw new NotImplementedException();
+            var model = await this.dbContext.ItemModels
+               .FirstOrDefaultAsync(x => x.Name == name);
+
+            if (model == null)
+            {
+                return 0;
+            }
+
+            return model.Id;
         }
 
         public async Task<IEnumerable<ItemModel>> GetAllItemModelsAsync()
@@ -52,8 +50,6 @@ namespace JewerlyGala.Infrastructure.Repositories
         public async Task<ItemModel?> GetByIdAsync(int id)
         {
             var model = await this.dbContext.ItemModels
-                //.Include(x => x.Features)
-                //.ThenInclude(x => x.Values)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if(model == null)
@@ -64,21 +60,21 @@ namespace JewerlyGala.Infrastructure.Repositories
             return model;
         }
 
-        public async Task<bool> Update(ItemModel model)
+        public async Task<bool> UpdateAsync(int id, string name)
         {
-            if(model == null)
+            var model = await dbContext.ItemModels
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (model == null)
             {
                 throw new NullReferenceException(nameof(model));
             }
 
+            model.Name = name;
 
+            await dbContext.SaveChangesAsync();
 
             return true;
-        }
-
-        public Task<bool> UpdateAsync(ItemModel model)
-        {
-            throw new NotImplementedException();
         }
     }
 }

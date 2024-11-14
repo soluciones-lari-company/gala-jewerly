@@ -2,13 +2,12 @@
 
 namespace JewerlyGala.Domain.Repositories
 {
-    public interface IItemModelsRepository
+    public interface IItemModelRepository
     {
         Task<IEnumerable<ItemModel>> GetAllItemModelsAsync();
         Task<ItemModel> GetByIdAsync(int id);
         Task<int> CreateAsync(string name);
-        Task AddFeatureAsync(int id, string name);
-        Task AddValueToFeature(int id, string value);
-        Task<bool> UpdateAsync(ItemModel model);
+        Task<bool> UpdateAsync(int id, string name);
+        Task<int> ExistsByName(string name);
     }
 }

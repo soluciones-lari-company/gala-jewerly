@@ -19,7 +19,7 @@ namespace JewerlyGala.Infrastructure.Extensions
                 options.UseSqlServer(connectionString,
                     builder => builder.MigrationsAssembly(typeof(JewerlyDbContext).Assembly.FullName)));
 
-            services.AddScoped<IItemModelsRepository, ItemModelsRepository>();
+            services.AddScoped<IItemModelRepository, ItemModelsRepository>();
         }
     }
 }

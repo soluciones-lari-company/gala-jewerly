@@ -13,8 +13,8 @@ namespace JewerlyGala.Application.ItemModels.Commands.CreateItemModel
     public class CreateItemModelCommandHandler : IRequestHandler<CreateItemModelCommand, int>
     {
         //private ILogger logger;
-        private IItemModelsRepository itemModelsRepository;
-        public CreateItemModelCommandHandler( IItemModelsRepository itemModelsRepository )
+        private IItemModelRepository itemModelsRepository;
+        public CreateItemModelCommandHandler( IItemModelRepository itemModelsRepository )
         {
             //this.logger = logger;
             this.itemModelsRepository = itemModelsRepository;
