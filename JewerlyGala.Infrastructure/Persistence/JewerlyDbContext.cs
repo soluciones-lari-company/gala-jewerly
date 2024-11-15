@@ -1,10 +1,12 @@
 ﻿using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace JewerlyGala.Infrastructure.Persistence
 {
-    public class JewerlyDbContext: DbContext
+    public class JewerlyDbContext: IdentityDbContext<User>
     {
         internal DbSet<ItemModel> ItemModels => Set<ItemModel>();
         internal DbSet<ItemModelFeature> ItemModelFeatures => Set<ItemModelFeature>();
