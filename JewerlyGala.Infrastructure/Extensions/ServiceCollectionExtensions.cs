@@ -21,7 +21,7 @@ namespace JewerlyGala.Infrastructure.Extensions
                 .EnableSensitiveDataLogging() // allows to show details for parameters
             );
 
-            services.AddIdentityCore<User>(options =>
+            services.AddIdentityApiEndpoints<User>(options =>
                 options.SignIn.RequireConfirmedAccount = true
                 ).AddEntityFrameworkStores<JewerlyDbContext>();
 
