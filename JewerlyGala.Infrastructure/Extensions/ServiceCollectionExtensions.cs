@@ -2,7 +2,6 @@
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Infrastructure.Persistence;
 using JewerlyGala.Infrastructure.Repositories;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

@@ -29,3 +29,11 @@ body
 }
 
 ###
+
+POST {{JewerlyGala.API_HostAddress}}/authentication/register
+Content-Type: application/json
+
+{
+    "email": "",
+    "password": ""
+}
