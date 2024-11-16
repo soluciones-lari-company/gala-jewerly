@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using JewerlyGala.Application.ItemModels;
 using JewerlyGala.Application.Services.ItemModels;
+using JewerlyGala.Application.User;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewerlyGala.Application.Extensions
@@ -16,23 +17,10 @@ namespace JewerlyGala.Application.Extensions
             services.AddMediatR(c => c.RegisterServicesFromAssembly(applicationAssembly));
             services.AddAutoMapper(applicationAssembly);
             services.AddValidatorsFromAssembly(applicationAssembly).AddFluentValidationAutoValidation();
+
+            services.AddScoped<IUserContext, UserContext>();
+
+            services.AddHttpContextAccessor();
         }
-
-        //public static IServiceCollection AddApplication(this IServiceCollection services)
-        //{
-        //    services.AddAutoMapper(Assembly.GetExecutingAssembly());
-        //    services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-        //    services.AddScoped<IItemModelService, ItemModelService>();
-        //    //services.AddMediatR(cfg => {
-        //    //    cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-        //    //    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
-        //    //    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehaviour<,>));
-        //    //    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
-        //    //    cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
-
-        //    //});
-
-        //    return services;
-        //}
     }
 }

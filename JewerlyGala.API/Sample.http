@@ -2,7 +2,9 @@
 @host = https://localhost
 @port = 7153
 
-@JewerlyGala.API_HostAddress = {{host}}:{{port}}
+@JewerlyGala.API_HostAddress = https://localhost:7153
+
+
 
 GET {{JewerlyGala.API_HostAddress}}/weatherforecast
 Accept: application/json

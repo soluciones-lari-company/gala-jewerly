@@ -9,6 +9,9 @@ namespace JewerlyGala.API.Extensions
     {
         public static void AddPresentation(this WebApplicationBuilder builder)
         {
+
+            builder.Services.AddAuthentication();
+
             // Add services to the container.
 
             builder.Services.AddControllers().AddJsonOptions(options =>
@@ -19,13 +22,13 @@ namespace JewerlyGala.API.Extensions
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddSwaggerGen(configure =>
             {
-                configure.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                configure.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
                 {
-                    Scheme = "Bearer",
-                    BearerFormat = "JWT",
-                    In = ParameterLocation.Header,
-                    Name = "Authorization",
-                    Description = "Bearer Authentication with JWT Token",
+                    Scheme = "bearerAuth",
+                    //BearerFormat = "JWT",
+                    //In = ParameterLocation.Header,
+                    //Name = "Authorization",
+                    //Description = "Bearer Authentication with JWT Token",
                     Type = SecuritySchemeType.Http
                 });
 
@@ -34,7 +37,7 @@ namespace JewerlyGala.API.Extensions
                     {
                         new OpenApiSecurityScheme {
                             Reference = new OpenApiReference {
-                                Id = "Bearer",
+                                Id = "bearerAuth",
                                     Type = ReferenceType.SecurityScheme
                             }
                         },
