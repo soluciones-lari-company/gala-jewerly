@@ -3,7 +3,8 @@
 @port = 7153
 
 @JewerlyGala.API_HostAddress = https://localhost:7153
-@token = CfDJ8IAPeVFeqZlCoDkau0TXiv2mvzZwiobv-Tz59UcQv82MDN4vh4qIOb5We35mjRqcKAi6xIqYTYGwGZv1bdNtBz59Lnj55rycDL6EBOUMz1p0OPA1YIsuaxFwdTvRb_MdE1LPMjtLeFf5viFfgSZph_KopFZg8U_cCcNeHGApv1DQgMlKc6aCnEYH1WJx9LTBOI9annyXkhJ1hdoGCzJtdo06zRhTnmxrcygg3ABo_YQCHGNO5AgttfLAKOMqq1yabdyz1Yg2M0C9OK-qszIILThs8BeyKB4JjYO-07RyJasbsQOny2hlmDt-xVnGGxtfdBpUyY3a35jlRNas_11Zt3LqFDT2UapAolrScIvqkEZvornstrbOCmN_WatYpsI2DHxzNpT4Mt9_iGKPAjjzZVQHvSggC1R-AdBOESlq1bbz-V-Sm6cY585d9AyTPopFCWyFg5rv_TTqBbS6t6aPa4WktYPFbtmJg2wJux1RPZjxJUUUtPGhxVbodlCuPKjm3vzC5YSYpxGUR9h61nHBuEDOGIos8UfZ_id611_deI43H9Y7svOybUCY4WKCSrFNSIgas287K1KEJeihNN0wbz2OGl5KcVRPF69v3lUawowv0PMRARcrEIjAV3jwgf5GHAlt3zCV-_Et4E-9b4x7VgLIL8RSRjVWqw1dQdvVr2HCnFVUFdNpaSrpy5-f3INHCow904Pt0XN-v9qoNReknnqBU18de9u_LXoVjf5RgL0aUUlUEF9_aBlqtg4zVbVEzLHTMVNW3LhijbXKroKGTVuV1prFmdtCBF8MokbiKGuG
+@token = CfDJ8IAPeVFeqZlCoDkau0TXiv0q6PgSo31LyhKfHII9OR22knyEYa9SL9xTD8nzxZz15ksP7jIqEsCpqQsKI26JkzxjOyTnM_21s9pbClLayyPmBvFuxSjZjysHUepYTdHCL7cEcA9kGhRdDwCm_lWw7jbTu6UpeLroVfPQ11aY2VszrKNNccHJBVVwVb5Q9WGA7wyBXCPwavdI8IOXC_fwr0LdU7yH1z4XhLFNYVdptcTJDjNrc7XqXcUOj_VU8vfKy6WaOq934GFeBF3iYEWDut_Wv_6GaObax8bxX1vvgOVIUk2NZZwDfeE41bxsHNv8IEJAhGm5t4-66BBp-SMsBhVNcfu2jJqVyA3E5mmm6u44QPYFuGaHC9_vkLmhWhqFabv57pu6lo2AiNfVzF2vBsG7HG6j8ihh7ZyAKmVh_UYmtlneTjSieIYSuR48btPuJ2RkjMWPgAHoCdhWL5MpBfMWVqLqvI7-_K2EzTMIw4BmseeJdoeFzef5Oty4SoiD_ZcONgFxi1jRbzc8M0ocIzTOxXvJLwwOr6W6VIMsIyUNU7wEot3gRqcJVgDXY4m2FVtFf5wKIK6OGSoaoIFWP7FkG8zsEpMBsf4I0kbIlA4K6rpxHNmNh91WPmWrTsN-E1ogSN7_ZDO6cN1RDrg0D9K9AqV00C8sOOyG1p-YzFEPXe8p-WWKlwZ1uFEdfe9sxZVB-0lqqbkdJ8mF7zcbaVOco_jeT7Q3-U_EjjusnJS4eVmUiz7ZXzTVLeaHih_Q5mhnM4HNiGMC9QSnbFvht0dCuzBX5xONmYaD-0wUgopM
+
 
 GET {{JewerlyGala.API_HostAddress}}/weatherforecast
 Accept: application/json
@@ -12,6 +13,7 @@ ProjectUrl: {{$}}
 ###
 
 GET {{JewerlyGala.API_HostAddress}}/api/ItemModel
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -34,7 +36,7 @@ POST {{JewerlyGala.API_HostAddress}}/api/identity/login
 Content-Type: application/json
 
 {
-    "email": "admin@gmail.com",
+    "email": "owner@gmail.com",
     "password": "C0nnect+1"
 }
 

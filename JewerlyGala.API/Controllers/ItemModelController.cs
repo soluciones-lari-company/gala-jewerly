@@ -22,6 +22,7 @@ namespace JewerlyGala.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Policy = "HasNationality")]
         public async Task<ActionResult<IEnumerable<ItemModelDto>>> GetAll()
         {
             var models = await mediator.Send(new GetAllModelsQuery());

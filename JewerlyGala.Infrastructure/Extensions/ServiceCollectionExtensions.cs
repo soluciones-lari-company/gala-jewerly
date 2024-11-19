@@ -1,5 +1,6 @@
 ﻿using JewerlyGala.Domain.Identity;
 using JewerlyGala.Domain.Repositories;
+using JewerlyGala.Infrastructure.Authorization;
 using JewerlyGala.Infrastructure.Persistence;
 using JewerlyGala.Infrastructure.Repositories;
 using JewerlyGala.Infrastructure.Seeders;
@@ -26,11 +27,16 @@ namespace JewerlyGala.Infrastructure.Extensions
             services.AddIdentityApiEndpoints<User>(options =>
                 options.SignIn.RequireConfirmedAccount = true
                 ).AddRoles<IdentityRole>()
+                .AddClaimsPrincipalFactory<JewerlyGalaUserClaimsPrincipalFactory>()
                 .AddEntityFrameworkStores<JewerlyDbContext>();
 
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
 
             services.AddScoped<IGalaSeeder, GalaSeeder>();
+
+
+            services.AddAuthorizationBuilder()
+                .AddPolicy("HasNationality", builder => builder.RequireClaim("Nationality"));
         }
     }
 }
