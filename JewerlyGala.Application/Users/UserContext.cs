@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 
-namespace JewerlyGala.Application.User
+namespace JewerlyGala.Application.Users
 {
     public interface IUserContext
     {
         CurrentUser? GetCurrentUser();
     }
 
-    public class UserContext(HttpContextAccessor httpContextAccessor) : IUserContext
+    public class UserContext(IHttpContextAccessor httpContextAccessor) : IUserContext
     {
         public CurrentUser? GetCurrentUser()
         {

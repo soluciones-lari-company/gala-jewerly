@@ -2,6 +2,8 @@
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Infrastructure.Persistence;
 using JewerlyGala.Infrastructure.Repositories;
+using JewerlyGala.Infrastructure.Seeders;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,9 +25,12 @@ namespace JewerlyGala.Infrastructure.Extensions
 
             services.AddIdentityApiEndpoints<User>(options =>
                 options.SignIn.RequireConfirmedAccount = true
-                ).AddEntityFrameworkStores<JewerlyDbContext>();
+                ).AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<JewerlyDbContext>();
 
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
+
+            services.AddScoped<IGalaSeeder, GalaSeeder>();
         }
     }
 }

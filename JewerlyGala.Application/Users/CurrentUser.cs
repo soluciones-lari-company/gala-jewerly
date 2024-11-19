@@ -1,4 +1,4 @@
-﻿namespace JewerlyGala.Application.User
+﻿namespace JewerlyGala.Application.Users
 {
     public record CurrentUser(string Id, string Email, IEnumerable<string> Roles)
     {

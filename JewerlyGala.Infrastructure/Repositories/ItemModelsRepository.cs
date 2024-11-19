@@ -9,10 +9,6 @@ namespace JewerlyGala.Infrastructure.Repositories
     {
         private JewerlyDbContext dbContext;
 
-        public ItemModelsRepository()
-        {
-        }
-
         public ItemModelsRepository(JewerlyDbContext dbContext)
         {
             this.dbContext = dbContext;
@@ -21,6 +17,8 @@ namespace JewerlyGala.Infrastructure.Repositories
         public async Task<int> CreateAsync(string name)
         {
             var newitemModel = new ItemModel { Name = name };
+
+            dbContext.ItemModels.Add(newitemModel);
 
             await dbContext.SaveChangesAsync();
 

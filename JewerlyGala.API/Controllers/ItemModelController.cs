@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using JewerlyGala.Application.ItemModels.Queries.GetAllModels;
 using JewerlyGala.Application.ItemModels.Queries.GetModelById;
 using JewerlyGala.Application.Dtos;
+using Microsoft.AspNetCore.Authorization;
+using JewerlyGala.Domain.Constans;
 
 namespace JewerlyGala.API.Controllers
 {
@@ -41,6 +43,7 @@ namespace JewerlyGala.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = UserRoles.Owner)]
         public async Task<IActionResult> CreateModel(CreateItemModelCommand command)
         {
             var idNewItemModel = await Mediator.Send(command);

@@ -3,8 +3,7 @@
 @port = 7153
 
 @JewerlyGala.API_HostAddress = https://localhost:7153
-
-
+@token = CfDJ8IAPeVFeqZlCoDkau0TXiv2mvzZwiobv-Tz59UcQv82MDN4vh4qIOb5We35mjRqcKAi6xIqYTYGwGZv1bdNtBz59Lnj55rycDL6EBOUMz1p0OPA1YIsuaxFwdTvRb_MdE1LPMjtLeFf5viFfgSZph_KopFZg8U_cCcNeHGApv1DQgMlKc6aCnEYH1WJx9LTBOI9annyXkhJ1hdoGCzJtdo06zRhTnmxrcygg3ABo_YQCHGNO5AgttfLAKOMqq1yabdyz1Yg2M0C9OK-qszIILThs8BeyKB4JjYO-07RyJasbsQOny2hlmDt-xVnGGxtfdBpUyY3a35jlRNas_11Zt3LqFDT2UapAolrScIvqkEZvornstrbOCmN_WatYpsI2DHxzNpT4Mt9_iGKPAjjzZVQHvSggC1R-AdBOESlq1bbz-V-Sm6cY585d9AyTPopFCWyFg5rv_TTqBbS6t6aPa4WktYPFbtmJg2wJux1RPZjxJUUUtPGhxVbodlCuPKjm3vzC5YSYpxGUR9h61nHBuEDOGIos8UfZ_id611_deI43H9Y7svOybUCY4WKCSrFNSIgas287K1KEJeihNN0wbz2OGl5KcVRPF69v3lUawowv0PMRARcrEIjAV3jwgf5GHAlt3zCV-_Et4E-9b4x7VgLIL8RSRjVWqw1dQdvVr2HCnFVUFdNpaSrpy5-f3INHCow904Pt0XN-v9qoNReknnqBU18de9u_LXoVjf5RgL0aUUlUEF9_aBlqtg4zVbVEzLHTMVNW3LhijbXKroKGTVuV1prFmdtCBF8MokbiKGuG
 
 GET {{JewerlyGala.API_HostAddress}}/weatherforecast
 Accept: application/json
@@ -17,25 +16,34 @@ Accept: application/json
 
 ###
 
-GET {{JewerlyGala.API_HostAddress}}/api/ItemModel/100
+GET {{JewerlyGala.API_HostAddress}}/api/ItemModel/1
 Accept: application/json
 
 ###
 
 POST {{JewerlyGala.API_HostAddress}}/api/ItemModel
+Authorization: Bearer {{token}}
 Content-Type: application/json
-Accept-Language: en-US,en;q=0.5
-body
 {
-    "name": "Leonard y Sheldon son dos físicos que comparten trabajo y apartamento. La serie comienza con la mudanza de Penny, su nueva y atractiva vecina"
+    "name": "Test1"
 }
 
 ###
 
-POST {{JewerlyGala.API_HostAddress}}/authentication/register
+POST {{JewerlyGala.API_HostAddress}}/api/identity/login
 Content-Type: application/json
 
 {
-    "email": "",
-    "password": ""
+    "email": "admin@gmail.com",
+    "password": "C0nnect+1"
+}
+
+###
+
+POST {{JewerlyGala.API_HostAddress}}/api/identity/user-role
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "userEmail": "luis.martinezh13@gmail.com",
+  "roleName": "Admin"
 }

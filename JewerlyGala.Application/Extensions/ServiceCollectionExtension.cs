@@ -2,7 +2,7 @@
 using FluentValidation.AspNetCore;
 using JewerlyGala.Application.ItemModels;
 using JewerlyGala.Application.Services.ItemModels;
-using JewerlyGala.Application.User;
+using JewerlyGala.Application.Users;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace JewerlyGala.Application.Extensions

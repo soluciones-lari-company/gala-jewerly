@@ -1,6 +1,6 @@
 using JewerlyGala.Infrastructure.Extensions;
 using JewerlyGala.Application.Extensions;
-using System.Text.Json.Serialization;
+using JewerlyGala.Infrastructure.Seeders;
 using Serilog;
 using JewerlyGala.API.Middlewares;
 using JewerlyGala.Domain.Identity;
@@ -40,6 +40,11 @@ else
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+var scope = app.Services.CreateScope();
+var seeder = scope.ServiceProvider.GetRequiredService<IGalaSeeder>();
+
+await seeder.Seed();
 
 app.UseHttpsRedirection();
 
