@@ -1,9 +1,12 @@
-﻿using JewerlyGala.Domain.Identity;
+﻿using JewerlyGala.Application.Interfaces;
+using JewerlyGala.Domain.Identity;
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Infrastructure.Authorization;
 using JewerlyGala.Infrastructure.Persistence;
+using JewerlyGala.Infrastructure.Persistence.Intereptors;
 using JewerlyGala.Infrastructure.Repositories;
 using JewerlyGala.Infrastructure.Seeders;
+using JewerlyGala.Infrastructure.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -30,8 +33,11 @@ namespace JewerlyGala.Infrastructure.Extensions
                 .AddClaimsPrincipalFactory<JewerlyGalaUserClaimsPrincipalFactory>()
                 .AddEntityFrameworkStores<JewerlyDbContext>();
 
+            services.AddScoped<AuditableEntitySaveChangesInterceptor>();
+
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
 
+            services.AddScoped<IDateTime, DateTimeService>();
             services.AddScoped<IGalaSeeder, GalaSeeder>();
 
 

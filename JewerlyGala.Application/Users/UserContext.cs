@@ -5,6 +5,8 @@ namespace JewerlyGala.Application.Users
 {
     public interface IUserContext
     {
+        string? UserId { get; }
+
         CurrentUser? GetCurrentUser();
     }
 
@@ -30,5 +32,7 @@ namespace JewerlyGala.Application.Users
 
             return new CurrentUser(userId, email, roles);
         }
+
+        public string? UserId => httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
     }
 }

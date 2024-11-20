@@ -6,6 +6,7 @@ using JewerlyGala.Application.ItemModels.Queries.GetModelById;
 using JewerlyGala.Application.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using JewerlyGala.Domain.Constans;
+using JewerlyGala.Application.ItemModels.Commands.UpdateItemModel;
 
 namespace JewerlyGala.API.Controllers
 {
@@ -50,6 +51,15 @@ namespace JewerlyGala.API.Controllers
             var idNewItemModel = await Mediator.Send(command);
 
             return Ok(idNewItemModel);
+        }
+
+        [HttpPut("update")]
+        [Authorize(Roles = UserRoles.Owner)]
+        public async Task<IActionResult> UpdateModel(UpdateItemModelCommand command)
+        {
+            await Mediator.Send(command);
+
+            return NoContent();
         }
     }
 }

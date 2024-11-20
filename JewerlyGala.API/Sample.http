@@ -3,7 +3,8 @@
 @port = 7153
 
 @JewerlyGala.API_HostAddress = https://localhost:7153
-@token = CfDJ8IAPeVFeqZlCoDkau0TXiv0q6PgSo31LyhKfHII9OR22knyEYa9SL9xTD8nzxZz15ksP7jIqEsCpqQsKI26JkzxjOyTnM_21s9pbClLayyPmBvFuxSjZjysHUepYTdHCL7cEcA9kGhRdDwCm_lWw7jbTu6UpeLroVfPQ11aY2VszrKNNccHJBVVwVb5Q9WGA7wyBXCPwavdI8IOXC_fwr0LdU7yH1z4XhLFNYVdptcTJDjNrc7XqXcUOj_VU8vfKy6WaOq934GFeBF3iYEWDut_Wv_6GaObax8bxX1vvgOVIUk2NZZwDfeE41bxsHNv8IEJAhGm5t4-66BBp-SMsBhVNcfu2jJqVyA3E5mmm6u44QPYFuGaHC9_vkLmhWhqFabv57pu6lo2AiNfVzF2vBsG7HG6j8ihh7ZyAKmVh_UYmtlneTjSieIYSuR48btPuJ2RkjMWPgAHoCdhWL5MpBfMWVqLqvI7-_K2EzTMIw4BmseeJdoeFzef5Oty4SoiD_ZcONgFxi1jRbzc8M0ocIzTOxXvJLwwOr6W6VIMsIyUNU7wEot3gRqcJVgDXY4m2FVtFf5wKIK6OGSoaoIFWP7FkG8zsEpMBsf4I0kbIlA4K6rpxHNmNh91WPmWrTsN-E1ogSN7_ZDO6cN1RDrg0D9K9AqV00C8sOOyG1p-YzFEPXe8p-WWKlwZ1uFEdfe9sxZVB-0lqqbkdJ8mF7zcbaVOco_jeT7Q3-U_EjjusnJS4eVmUiz7ZXzTVLeaHih_Q5mhnM4HNiGMC9QSnbFvht0dCuzBX5xONmYaD-0wUgopM
+@token = CfDJ8IAPeVFeqZlCoDkau0TXiv1vuuFoIlqUrMykMEr0c2IAnlQHpUwR_Oa3WAj1Fge7c9mz_v-xAGKw1uCRvSy5yOnmJ_KYZ1W29X28uB-NY2FzQ6ntEOouCrolAo1Qm5NFV_Lnsc8tcJYlMJm44abcTq1MYr8I8tTKUD2UFH6Li-9U8Z4Ddy2-3lWSf9RiuXeNUEpOR5wFzdehvOLCme_51fUcFciSkNIyPfUK5WEGYIUv_Vm8bBGcxnQtlb2awFAbaHu6Suz-Sw8RDeCUsOPcw_XPOoo_q3DV50D-zJlFcNQBVtw639MhzMd4QmaFFqYu-uVt3HJ4ID0GmIQ57hGOW5aExV1nQJ0GGnsBdOnz4O3A352rnWB9z1dImJcVVVt0w99EhEeYJ4jGyLra90DZO62_2_Als3QHbCKbrg0AqUPAWWhIc_GDJw9iIspVy1yPi-A9A9h3GqHItcLQ5lwYDblz-rWPzspxBkxQqFjgQ6LDrTfXF3rci3GV2RNTr5ABJGp3M9xpj15WsgYwvYXsB2cM7yHZLy56iGNv4WFhPEcpZo-eGTz-olnlgVvKtOW2K9VHb6AE95_7kUcASYO9riTqVYUxpqWOdsJlhwwEoY6I983Hg-8vTAdHdaS7t4EQcj17eulTHQBPrIfNbRU-gkPQxQVGH4nK_zMQyEjIJ93xM6RpGP619pbU8aRDJAs-6Woir5qJfQIZqkpccL8FE74v8SBHeC9dsdIdoZ6tgJBh7rquGiZIEUrchcARyrq7HlaA5mbjrtLyWIbsKOa9vp9vASoiKgxuZfq18NPluofC
+
 
 
 GET {{JewerlyGala.API_HostAddress}}/weatherforecast
@@ -27,7 +28,17 @@ POST {{JewerlyGala.API_HostAddress}}/api/ItemModel
 Authorization: Bearer {{token}}
 Content-Type: application/json
 {
-    "name": "Test1"
+    "name": "Test2"
+}
+
+###
+
+PUT {{JewerlyGala.API_HostAddress}}/api/ItemModel/update
+Authorization: Bearer {{token}}
+Content-Type: application/json
+{
+    "id": 3,
+    "name": "Test2"
 }
 
 ###
