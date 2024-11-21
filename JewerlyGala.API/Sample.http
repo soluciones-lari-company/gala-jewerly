@@ -3,8 +3,7 @@
 @port = 7153
 
 @JewerlyGala.API_HostAddress = https://localhost:7153
-@token = CfDJ8IAPeVFeqZlCoDkau0TXiv1vuuFoIlqUrMykMEr0c2IAnlQHpUwR_Oa3WAj1Fge7c9mz_v-xAGKw1uCRvSy5yOnmJ_KYZ1W29X28uB-NY2FzQ6ntEOouCrolAo1Qm5NFV_Lnsc8tcJYlMJm44abcTq1MYr8I8tTKUD2UFH6Li-9U8Z4Ddy2-3lWSf9RiuXeNUEpOR5wFzdehvOLCme_51fUcFciSkNIyPfUK5WEGYIUv_Vm8bBGcxnQtlb2awFAbaHu6Suz-Sw8RDeCUsOPcw_XPOoo_q3DV50D-zJlFcNQBVtw639MhzMd4QmaFFqYu-uVt3HJ4ID0GmIQ57hGOW5aExV1nQJ0GGnsBdOnz4O3A352rnWB9z1dImJcVVVt0w99EhEeYJ4jGyLra90DZO62_2_Als3QHbCKbrg0AqUPAWWhIc_GDJw9iIspVy1yPi-A9A9h3GqHItcLQ5lwYDblz-rWPzspxBkxQqFjgQ6LDrTfXF3rci3GV2RNTr5ABJGp3M9xpj15WsgYwvYXsB2cM7yHZLy56iGNv4WFhPEcpZo-eGTz-olnlgVvKtOW2K9VHb6AE95_7kUcASYO9riTqVYUxpqWOdsJlhwwEoY6I983Hg-8vTAdHdaS7t4EQcj17eulTHQBPrIfNbRU-gkPQxQVGH4nK_zMQyEjIJ93xM6RpGP619pbU8aRDJAs-6Woir5qJfQIZqkpccL8FE74v8SBHeC9dsdIdoZ6tgJBh7rquGiZIEUrchcARyrq7HlaA5mbjrtLyWIbsKOa9vp9vASoiKgxuZfq18NPluofC
-
+@token = CfDJ8IAPeVFeqZlCoDkau0TXiv1SQ75s_xMK-TvVaQmhEAMeNR8qfeZ3mkRDoQxFx9gv3Mv_sFuftSZM9ieLiSgyKf83zfIVTxG8YtHqEe8-0Z6w4wEejsfCGwxgcC7KQ3GIIGkvg2Oz4-rz0whcbkhB8Iwxhu8RCy5YPaGRR74FR-LomqnCCmexujR8IJiNrwMx4gwyHZq9ioadIyfaGqGUcSgZAD5_SiUtIBeq8vtcG6KksoZjd_nDrokP4CUxHXuy_ucyl8LwQIIfcZX0RO_XXTwvQDUm00oI4HSffA_akB8s9_-1LendgpkalyoVPXGQkyOr-sTPRn9TQ7wprLZG4H0496IHhzusFP0F5p8bcG-yyiv_XhAZRnc2AM_Tx8OJ26VMfHj5ELF8WxumuivftU6NXerPtevrqX_paOq6eV4VU8kPey1IjbMFlDe0xvmLIM28hdbfnnoWppZOfRX5K6RmVjeLpAK6iX4RjDPcveqGK5Gv18Bb2kxmljSLcrBiJbvsz5pirIbQK5CQIa9uOo30WAMntbaLFliCu6Z4g2shsA_5YeBiOsq_8MzzvwF68h-055vnUVD8C6ZNvuLNeRlrlQMNoz_D7qBw-iEyQX3FadaZubNJOFwjJ6csamfECcep77E0FndzXa5oHGafXejGvXCkl1wZe1RWneXaEsWYXbGNJPitx8yxIZ0W6go7CExvDM3bmNkjJfOWmOwV72ZxtrtrypFrgGtrXv2jsKzNJN6x44rVSGirGiU0FujhAFAO1gL1Y3aqNlZULJcErD0uoi4ONbVs_DYdbZ4uAPk9v4CVPJRIhkbEjRlg5eNhrQuG_Dmr_L7zXwFMbKEXdRmmYNvf8ciVy2nkY7dFNGOoZQWnoyHBt5Gt5QPqe2iFsA
 
 
 GET {{JewerlyGala.API_HostAddress}}/weatherforecast
@@ -47,7 +46,7 @@ POST {{JewerlyGala.API_HostAddress}}/api/identity/login
 Content-Type: application/json
 
 {
-    "email": "owner@gmail.com",
+    "email": "admin@gmail.com",
     "password": "C0nnect+1"
 }
 
@@ -60,3 +59,44 @@ Authorization: Bearer {{token}}
   "userEmail": "luis.martinezh13@gmail.com",
   "roleName": "Admin"
 }
+
+###
+
+
+
+POST {{JewerlyGala.API_HostAddress}}/api/ItemSerie
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "serieCode": "A300",
+  "description": "Cadena barbada de 45cm de largo por 4mm de grosor en plata 925",
+  "material": "Plata 925",
+  "quantity": 10,
+  "supplierId": "AC87D593-8C05-4D40-AAC4-10FF5D217CC4",
+  "purchaseUnitMeasure": "Item",
+  "purchasePriceByUnitMeasure": 0,
+  "purchaseDate": "2024-11-01",
+  "purchaseUnitPrice": 900,
+  "salePercentRentability": 200,
+  "saleUnitPrice": 1800,
+  "featuresAndValues": [
+    {
+      "featureName": "Tipo Cadena",
+      "value": "Barbada"
+    },
+    {
+      "featureName": "Largo",
+      "value": "45cm"
+    },
+    {
+      "featureName": "Grosor",
+      "value": "4mm"
+    }
+  ]
+}
+
+###
+
+GET {{JewerlyGala.API_HostAddress}}/api/ItemSerie/A6EA6A68-C290-4E1A-B986-C387D44406BD 
+Content-Type: application/json
+Authorization: Bearer {{token}}

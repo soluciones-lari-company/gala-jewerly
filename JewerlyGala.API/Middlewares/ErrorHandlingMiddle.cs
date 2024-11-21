@@ -16,7 +16,14 @@ namespace JewerlyGala.API.Middlewares
             {
                 await next.Invoke(context);
             }
-            catch (NotFoundException ex)
+            catch (InvalidParamException ex)
+            {
+                logger.LogWarning(ex, ex.Message);
+
+
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(ex.Message);
+            }catch (NotFoundException ex)
             {
                 logger.LogError(ex, ex.Message);
 

@@ -18,6 +18,8 @@ namespace JewerlyGala.Infrastructure.Extensions
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+
+            // 
             string connectionString = configuration.GetConnectionString("DefaultConnection");
             //connectionString = "Server=(localdb)\\mssqllocaldb;Database=JewerlyGala;Trusted_Connection=True;MultipleActiveResultSets=true;";
             
@@ -27,6 +29,7 @@ namespace JewerlyGala.Infrastructure.Extensions
                 .EnableSensitiveDataLogging() // allows to show details for parameters
             );
 
+            // setup identity roles s
             services.AddIdentityApiEndpoints<User>(options =>
                 options.SignIn.RequireConfirmedAccount = true
                 ).AddRoles<IdentityRole>()
@@ -35,9 +38,18 @@ namespace JewerlyGala.Infrastructure.Extensions
 
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
+            // add repositories
+            services.AddScoped<IItemSerieRepository, ItemSerieRepository>();
+            services.AddScoped<IItemMaterialRepository, ItemMaterialRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
+            services.AddScoped<IItemFeatureValueRepository, ItemFeatureValueRepository>();
+
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
 
+            // add extra services
             services.AddScoped<IDateTime, DateTimeService>();
+
+            // add seeders data
             services.AddScoped<IGalaSeeder, GalaSeeder>();
 
 
