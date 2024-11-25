@@ -1,10 +1,9 @@
-﻿using JewerlyGala.Domain.Entities;
-using JewerlyGala.Domain.Repositories;
+﻿using JewerlyGala.Domain.Repositories;
 using MediatR;
 
-namespace JewerlyGala.Application.Suppliers.Commands.CreateSupplier
+namespace JewerlyGala.Application.Features.Suppliers.Commands.CreateSupplier
 {
-    public class CreateSupplierCommand: IRequest<Guid>
+    public class CreateSupplierCommand : IRequest<Guid>
     {
         public string SupplierName { get; set; } = default!;
     }
@@ -15,7 +14,7 @@ namespace JewerlyGala.Application.Suppliers.Commands.CreateSupplier
     {
         public async Task<Guid> Handle(CreateSupplierCommand request, CancellationToken cancellationToken)
         {
-           
+
             var supplierId = await supplierRepository.CreateAsync(request.SupplierName);
 
             return supplierId;

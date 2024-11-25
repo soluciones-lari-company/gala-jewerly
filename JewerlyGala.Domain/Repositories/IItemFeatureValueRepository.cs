@@ -9,6 +9,7 @@
         public Task<int> GetFeatureValueLinkIdAsync(int featureId, int valueId);
         public Task<int> CreateLinkFeatureToValueAsync(int featureId, int valueId);
         public Task<bool> IsFeatureValueLinkedToItemSerieAsync(Guid itemSerieId, int FeatureToValueId);
+        public Task<List<Guid>> GetItemSeriesIdsByFeatureAndValueAsync(int FeatureToValueId);
         public Task CreateLinkItemSerieToFeatureValueLink(Guid itemSerieId, int FeatureToValueId);
         public Task RemoveLinkItemSerieToFeatureValueLink(Guid itemSerieId, int FeatureToValueId);
     }

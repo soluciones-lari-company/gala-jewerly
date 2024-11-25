@@ -1,5 +1,4 @@
 ﻿using JewerlyGala.Domain.Common;
-using System.Collections.Generic;
 
 namespace JewerlyGala.Domain.Entities
 {

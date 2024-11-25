@@ -1,17 +1,13 @@
-﻿using JewerlyGala.Domain.Entities;
+﻿using JewerlyGala.Application.Features.ItemSeries.Common;
+using JewerlyGala.Domain.Entities;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace JewerlyGala.Application.ItemSeries.Commands
+namespace JewerlyGala.Application.Features.ItemSeries.Command.CreateItemSerie
 {
-    public class ItemSerieFeatures
-    {
-        public string FeatureName { get; set; } = default!;
-        public string Value { get; set; } = default!;
-    }
-    public class CreateItemSerieCommand: IRequest<Guid>
+    public class CreateItemSerieCommand : IRequest<Guid>
     {
         public string SerieCode { get; set; } = default!;
         public string Description { get; set; } = default!;
@@ -45,7 +41,7 @@ namespace JewerlyGala.Application.ItemSeries.Commands
 
             var isFreeCode = await itemSerieRepository.IsUsableSerieCodeAsync(request.SerieCode);
 
-            if( !isFreeCode )
+            if (!isFreeCode)
             {
                 throw new InvalidParamException($"serie code: [{request.SerieCode}] is not available");
             }
@@ -85,7 +81,7 @@ namespace JewerlyGala.Application.ItemSeries.Commands
             }
 
 
-            if(featuresAndValues != null && featuresAndValues.Count > 0)
+            if (featuresAndValues != null && featuresAndValues.Count > 0)
             {
                 foreach (var feature in featuresAndValues)
                 {
@@ -102,21 +98,21 @@ namespace JewerlyGala.Application.ItemSeries.Commands
         {
             // exists feature
             var featureId = await itemFeatureValueRepository.GetFeatureIdByNameAsync(featureName);
-            if(featureId == 0)
+            if (featureId == 0)
             {
                 featureId = await itemFeatureValueRepository.CreateFeatureAsync(featureName);
             }
 
             // exists value
             var valueId = await itemFeatureValueRepository.GetFeatureValueIdByNameAsync(value);
-            if(valueId == 0)
+            if (valueId == 0)
             {
                 valueId = await itemFeatureValueRepository.CreateFeatureValueAsync(value);
             }
 
             // exists link between feature and value
-            var linkdIdForFeatureTovalue = await itemFeatureValueRepository.GetFeatureValueLinkIdAsync(featureId, valueId); 
-            if(linkdIdForFeatureTovalue == 0)
+            var linkdIdForFeatureTovalue = await itemFeatureValueRepository.GetFeatureValueLinkIdAsync(featureId, valueId);
+            if (linkdIdForFeatureTovalue == 0)
             {
                 linkdIdForFeatureTovalue = await itemFeatureValueRepository.CreateLinkFeatureToValueAsync(featureId, valueId);
             }
@@ -128,7 +124,7 @@ namespace JewerlyGala.Application.ItemSeries.Commands
         {
             var material = await itemMaterialRepository.GetByName(materialName);
 
-            if(material == null)
+            if (material == null)
             {
                 var materialId = await itemMaterialRepository.CreateAsync(materialName);
 

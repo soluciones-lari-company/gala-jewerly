@@ -100,6 +100,13 @@ namespace JewerlyGala.Infrastructure.Repositories
             }
         }
 
+        public async Task<List<Guid>> GetItemSeriesIdsByFeatureAndValueAsync(int FeatureToValueId)
+        {
+            var SeriesIds = await dbContext.ItemSerieToFeatureAndValues.Where(e => e.ItemFeatureToValueId == FeatureToValueId).Select(e => e.ItemSerieId).ToListAsync();
+
+            return SeriesIds;
+        }
+
         public async Task<bool> IsFeatureValueLinkedToItemSerieAsync(Guid itemSerieId, int FeatureToValueId)
         {
             return await dbContext.ItemSerieToFeatureAndValues

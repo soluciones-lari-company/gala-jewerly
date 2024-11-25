@@ -39,6 +39,7 @@ namespace JewerlyGala.Infrastructure.Extensions
             services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
             // add repositories
+            services.AddScoped<ISearchEngineRepository, SearchEngineRepository>();
             services.AddScoped<IItemSerieRepository, ItemSerieRepository>();
             services.AddScoped<IItemMaterialRepository, ItemMaterialRepository>();
             services.AddScoped<ISupplierRepository, SupplierRepository>();
