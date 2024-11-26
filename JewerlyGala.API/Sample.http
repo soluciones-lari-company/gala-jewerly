@@ -1,11 +1,9 @@
-# For more info on HTTP files go to https://aka.ms/vs/httpfile
+﻿# For more info on HTTP files go to https://aka.ms/vs/httpfile
 @host = https://localhost
 @port = 7153
 
 @JewerlyGala.API_HostAddress = https://localhost:7153
-@token = CfDJ8IAPeVFeqZlCoDkau0TXiv1vuuFoIlqUrMykMEr0c2IAnlQHpUwR_Oa3WAj1Fge7c9mz_v-xAGKw1uCRvSy5yOnmJ_KYZ1W29X28uB-NY2FzQ6ntEOouCrolAo1Qm5NFV_Lnsc8tcJYlMJm44abcTq1MYr8I8tTKUD2UFH6Li-9U8Z4Ddy2-3lWSf9RiuXeNUEpOR5wFzdehvOLCme_51fUcFciSkNIyPfUK5WEGYIUv_Vm8bBGcxnQtlb2awFAbaHu6Suz-Sw8RDeCUsOPcw_XPOoo_q3DV50D-zJlFcNQBVtw639MhzMd4QmaFFqYu-uVt3HJ4ID0GmIQ57hGOW5aExV1nQJ0GGnsBdOnz4O3A352rnWB9z1dImJcVVVt0w99EhEeYJ4jGyLra90DZO62_2_Als3QHbCKbrg0AqUPAWWhIc_GDJw9iIspVy1yPi-A9A9h3GqHItcLQ5lwYDblz-rWPzspxBkxQqFjgQ6LDrTfXF3rci3GV2RNTr5ABJGp3M9xpj15WsgYwvYXsB2cM7yHZLy56iGNv4WFhPEcpZo-eGTz-olnlgVvKtOW2K9VHb6AE95_7kUcASYO9riTqVYUxpqWOdsJlhwwEoY6I983Hg-8vTAdHdaS7t4EQcj17eulTHQBPrIfNbRU-gkPQxQVGH4nK_zMQyEjIJ93xM6RpGP619pbU8aRDJAs-6Woir5qJfQIZqkpccL8FE74v8SBHeC9dsdIdoZ6tgJBh7rquGiZIEUrchcARyrq7HlaA5mbjrtLyWIbsKOa9vp9vASoiKgxuZfq18NPluofC
-
-
+@token = CfDJ8IAPeVFeqZlCoDkau0TXiv0G9WYjegi4lzvIqPbpHbNj7NFmNq605L6CR50P2XBcIwsSsiDMBlBvDJO0ZCF9GjcWyFOxMnYEkHcqX3YxEizl4fYgr7NzuD8OjkVeeTBXU10TrKxiF24DxjeBmc96ezypilsVC2BozJmLyum6J9iitaixGKMS9anZc_iTJSMO3Ulws5_WIp7VkyJixxybpidKZtntE6H3-zGvAE8sH2o2VUv0eQh2CjlFGkZN7Kumo2zgqYEcGcY0JInH86dgmr13TfExIzzCfWJYmfzUmFBM5aIH9PUgMOG7m_OZkQgeK_k1kvM3bDMLtlq8apyy-OZCfcGgi4un8_ROsZSta5qCDhvLxJ4c9tQwMm1X5LN42C6xaYKEkpsTX4qExNm3r7SXENgk8-mub98klBNNE0SqmGzMITxMo1k-R7tDM68fe4BrkNZRGkgTPwzKG5wi2m9DABb9iU0dx9_gVSW1usDcXa-q1KyOkofX-Nv_vYuLWuQ8SDyG0qkoIzuC999JYzPnAOE3gsLPM_Y1VRtkl9q4Bpqw7lelV63lrbNDuJQ1krB0wFhiCrFQ8Q5tbSTxNx9hkyywK5H-Epn6bPywzJASIn6Pbm746fotsdP0xmHhFfvd6aAIJtSKwQMEvRJ4--K8swxrxbwHwcZS8MIT3UVvrpx0UNeZD5E7uOexgbkf8TL3qw4K66G0qVKcPlyFglfcWLlKnCKj5lEP-XmbakKPN0q5yvbPV8CFkDcpSAUiwBHmYfbLNFJSkc6JlaNAV33AXsAe3NgUA8wlW_BxNYK5_EN-DQOcVb9Dg8vThqz7fEulvV3zs8Fp0RcRgTo_biz5TA2FCZcQsGjoWw5bGekdQYtEI5uwHdJ0WCm4dvpDsQ
 
 GET {{JewerlyGala.API_HostAddress}}/weatherforecast
 Accept: application/json
@@ -47,7 +45,7 @@ POST {{JewerlyGala.API_HostAddress}}/api/identity/login
 Content-Type: application/json
 
 {
-    "email": "owner@gmail.com",
+    "email": "admin@gmail.com",
     "password": "C0nnect+1"
 }
 
@@ -60,3 +58,107 @@ Authorization: Bearer {{token}}
   "userEmail": "luis.martinezh13@gmail.com",
   "roleName": "Admin"
 }
+
+###
+
+
+
+POST {{JewerlyGala.API_HostAddress}}/api/ItemSerie
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "serieCode": "A200",
+  "description": "Broqueles dormilones 2mm en oro 10k",
+  "material": "Plata 925",
+  "quantity": 10,
+  "supplierId": "AC87D593-8C05-4D40-AAC4-10FF5D217CC4",
+  "purchaseUnitMeasure": "Item",
+  "purchasePriceByUnitMeasure": 0,
+  "purchaseDate": "2024-11-01",
+  "purchaseUnitPrice": 900,
+  "salePercentRentability": 200,
+  "saleUnitPrice": 1800,
+  "featuresAndValues": [
+    {
+      "featureName": "Tipo Cadena",
+      "value": "Cartier 3x1"
+    },
+    {
+      "featureName": "Largo",
+      "value": "40cm"
+    },
+    {
+      "featureName": "Grosor",
+      "value": "3mm"
+    }
+  ]
+}
+
+###
+
+GET {{JewerlyGala.API_HostAddress}}/api/ItemSerie
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "featuresAndValues": [
+    {
+      "featureName": "Tipo broquel",
+      "value": "Dormilonas"
+    },
+    {
+      "featureName": "Largo",
+      "value": "55cm"
+    }
+  ]
+}
+
+###
+
+PATCH {{JewerlyGala.API_HostAddress}}/api/ItemSerie/E350E349-207D-4F38-B990-7EF9EB035564
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "id": "E350E349-207D-4F38-B990-7EF9EB035564",
+  "serieCode": "A304",
+  "description": "Cadena cartier 3x1 de 40cm de largo por 3mm de grosor en plata 925",
+  "material": "Plata 925",
+  "quantity": 10,
+  "supplierId": "AC87D593-8C05-4D40-AAC4-10FF5D217CC4",
+  "purchaseUnitMeasure": "Item",
+  "purchasePriceByUnitMeasure": 0,
+  "purchaseDate": "2024-11-01",
+  "purchaseUnitPrice": 900,
+  "salePercentRentability": 200,
+  "saleUnitPrice": 1800
+}
+
+###
+
+POST {{JewerlyGala.API_HostAddress}}/api/ItemSerie/e08b8598-652a-4c77-a4f8-a9ca0467746f/features
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "serieId": "e08b8598-652a-4c77-a4f8-a9ca0467746f",
+  "feature": {
+    "featureName": "Medida",
+    "value": "2mm"
+  }
+}
+
+###
+
+DELETE {{JewerlyGala.API_HostAddress}}/api/ItemSerie/e08b8598-652a-4c77-a4f8-a9ca0467746f/features
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "serieId": "e08b8598-652a-4c77-a4f8-a9ca0467746E",
+  "feature": {
+    "featureName": "Medida",
+    "value": "2mm"
+  }
+}
+
+###
+GET {{JewerlyGala.API_HostAddress}}/api/ItemSerie/A6EA6A68-C290-4E1A-B986-C387D44406BD 
+Content-Type: application/json
+Authorization: Bearer {{token}}
