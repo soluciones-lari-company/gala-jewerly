@@ -11,7 +11,7 @@ namespace JewerlyGala.Infrastructure.Persistence
     {
         private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-
+        #region Inventory
         internal DbSet<ItemModel> ItemModels => Set<ItemModel>();
         internal DbSet<ItemModelFeature> ItemModelFeatures => Set<ItemModelFeature>();
         internal DbSet<ItemModelFeatureValue> ItemModelFeatureValues => Set<ItemModelFeatureValue>();
@@ -22,6 +22,13 @@ namespace JewerlyGala.Infrastructure.Persistence
         internal DbSet<ItemFeatureValue> ItemFeatureValues => Set<ItemFeatureValue>();
         internal DbSet<ItemFeatureToValue> ItemFeatureToValues => Set<ItemFeatureToValue>();
         internal DbSet<ItemSerieToFeatureAndValue> ItemSerieToFeatureAndValues => Set<ItemSerieToFeatureAndValue>();
+        #endregion
+
+        #region Sales
+        internal DbSet<Customer> Customers => Set<Customer>();
+        internal DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
+        internal DbSet<SaleOrderLine> SalesOrderLines => Set<SaleOrderLine>();
+        #endregion
 
         public JewerlyDbContext(
             DbContextOptions<JewerlyDbContext> options,
