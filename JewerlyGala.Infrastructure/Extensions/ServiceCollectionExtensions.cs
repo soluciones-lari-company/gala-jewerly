@@ -48,6 +48,7 @@ namespace JewerlyGala.Infrastructure.Extensions
             services.AddScoped<IItemFeatureValueRepository, ItemFeatureValueRepository>();
 
             services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
 
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using JewerlyGala.Application.Features.Customers.DTOs;
 using JewerlyGala.Application.Features.ItemSeries.Queries.GetAllItemSeries;
+using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
@@ -25,6 +26,7 @@ namespace JewerlyGala.Application.Features.Customers.Queries
 
             var customer  = await customerRepository.GetByIdAsync(request.CustomerId);
 
+            if (customer == null) throw new NotFoundException(nameof(customer));
 
             return mapper.Map<CustomerDTO>(customer );
         }

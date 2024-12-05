@@ -4,7 +4,7 @@ namespace JewerlyGala.Domain.Entities
 {
     public class SalesOrder : BaseAuditableEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid IdCustomer { get; set; }
         public DateOnly Date { get; set; }
         public DateOnly? DueDate { get; set; }

@@ -106,8 +106,8 @@ Authorization: Bearer {{token}}
       "value": "Dormilonas"
     },
     {
-      "featureName": "Largo",
-      "value": "55cm"
+      "featureName": "Medida",
+      "value": "2mm"
     }
   ]
 }
@@ -162,3 +162,111 @@ Authorization: Bearer {{token}}
 GET {{JewerlyGala.API_HostAddress}}/api/ItemSerie/A6EA6A68-C290-4E1A-B986-C387D44406BD 
 Content-Type: application/json
 Authorization: Bearer {{token}}
+
+###
+POST {{JewerlyGala.API_HostAddress}}/api/Customer/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "name": "Señora Mary",
+  "phoneNumber": "1111111111",
+  "email": "NA",
+  "discount": 0
+}
+###
+
+GET {{JewerlyGala.API_HostAddress}}/api/Customer/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+
+GET {{JewerlyGala.API_HostAddress}}/api/Customer/b4bcc000-6561-4c38-8921-0f4a7c867c45
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+PATCH {{JewerlyGala.API_HostAddress}}/api/Customer/b4bcc000-6561-4c38-8921-0f4a7c867c45
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "customerId": "b4bcc000-6561-4c38-8921-0f4a7c867c45",
+  "name": "Maricela Flores",
+  "phoneNumber": "1111111111",
+  "email": "NA",
+  "discount": 0
+}
+###
+
+POST {{JewerlyGala.API_HostAddress}}/api/SalesOrder/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "idCustomer": "b4bcc000-6561-4c38-8921-0f4a7c867c45",
+  "date": "2024-11-27",
+  "zone": "Tianguis Lira"
+}
+###
+
+GET {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64
+Content-Type: application/json
+Authorization: Bearer {{token}}
+###
+
+
+POST {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64/line
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64",
+  "numLine": 1,
+  "itemSerieId": "E350E349-207D-4F38-B990-7EF9EB035564",
+  "serieCode": "A304",
+  "descripcion": "Cadena cartier 3x1 de 40cm de largo por 3mm de grosor en plata 925",
+  "quantity": 2,
+  "discountPercentaje": 10
+}
+###
+
+
+DELETE {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64/line/E350E349-207D-4F38-B990-7EF9EB035564
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64",
+  "itemSerieId": "E350E349-207D-4F38-B990-7EF9EB035564" ,
+  "quantity": 2
+}
+
+  ###
+
+POST {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64/step3Payment
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64",
+  "paymentTerms": "PPD",
+  "paymentMethod": "01",
+  "paymentConditions": "NET07"
+}
+
+###
+
+POST {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64/confirm
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64",
+  "paymentTerms": "PPD",
+  "paymentMethod": "01",
+  "paymentConditions": "NET07"
+}
+
+###
+
+PATCH {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64/cancel
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64"
+}

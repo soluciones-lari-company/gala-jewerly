@@ -20,7 +20,6 @@ namespace JewerlyGala.API.Middlewares
             {
                 logger.LogWarning(ex, ex.Message);
 
-
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(ex.Message);
             }catch (NotFoundException ex)
