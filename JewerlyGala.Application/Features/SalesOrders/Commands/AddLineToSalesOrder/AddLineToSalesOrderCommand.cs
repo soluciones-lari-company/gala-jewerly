@@ -92,7 +92,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
                 line.Descripcion = serie.Description;
                 line.Quantity = request.Quantity;
                 line.UnitPrice = serie.SaleUnitPrice;
-                line.SubTotal = request.Quantity * serie.SaleUnitPrice;
+                line.SubTotal = line.Quantity * serie.SaleUnitPrice;
                 line.DiscountPercentaje = salesOrderRepository.Order.DiscountPercentaje;
                 line.DiscountTotal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.SubTotal * (salesOrderRepository.Order.DiscountPercentaje / 100)) : 0;
                 line.Total = line.SubTotal - line.DiscountTotal;
@@ -104,8 +104,8 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             else
             {
                 line.Quantity += request.Quantity;
-                line.UnitPrice = serie.SaleUnitPrice;
-                line.SubTotal = request.Quantity * serie.SaleUnitPrice;
+                //line.UnitPrice = serie.SaleUnitPrice;
+                line.SubTotal = line.Quantity * serie.SaleUnitPrice;
                 line.DiscountPercentaje = salesOrderRepository.Order.DiscountPercentaje;
                 line.DiscountTotal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.SubTotal * (salesOrderRepository.Order.DiscountPercentaje / 100)) : 0;
                 line.Total = line.SubTotal - line.DiscountTotal;

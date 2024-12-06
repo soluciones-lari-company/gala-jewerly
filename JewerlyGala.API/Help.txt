@@ -1,0 +1,1 @@
+add-migration accounts -startupproject JewerlyGala.API -project JewerlyGala.Infrastructure 

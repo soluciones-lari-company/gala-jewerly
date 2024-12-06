@@ -12,5 +12,6 @@ namespace JewerlyGala.Domain.Entities
         public DateOnly? LastPayment { get; set; }
         public int? Discount { get; set; }
         public virtual ICollection<SalesOrder> SalesOrdersNavigation { get; set; } = [];
+        public virtual ICollection<SalePayment> Payments { get; set; } = [];
     }
 }

@@ -4,6 +4,7 @@ using JewerlyGala.Application.Features.SalesOrders.Commands.ConfirmSaleOrder;
 using JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder;
 using JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOrder;
 using JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Payment;
+using JewerlyGala.Application.Features.SalesOrders.Commands.SetDiscountToSaleOrder;
 using JewerlyGala.Application.Features.SalesOrders.DTOs;
 using JewerlyGala.Application.Features.SalesOrders.Queries.GetSalesOrderById;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +30,7 @@ namespace JewerlyGala.API.Controllers
         }
 
         [HttpPost("{id}/step3Payment")]
-        public async Task<ActionResult<SalesOrderDTO>> SaleOrderStep3Payment(Guid id, SaleOrderStep3PaymentCommand command)
+        public async Task<ActionResult> SaleOrderStep3Payment(Guid id, SaleOrderStep3PaymentCommand command)
         {
             await Mediator.Send(command);
 
@@ -37,7 +38,7 @@ namespace JewerlyGala.API.Controllers
         }
 
         [HttpPost("{id}/confirm")]
-        public async Task<ActionResult<SalesOrderDTO>> ConfirmSaleOrder(Guid id, ConfirmSaleOrderCommand command)
+        public async Task<ActionResult> ConfirmSaleOrder(Guid id, ConfirmSaleOrderCommand command)
         {
             await Mediator.Send(command);
 
@@ -45,7 +46,15 @@ namespace JewerlyGala.API.Controllers
         }
 
         [HttpPatch("{id}/cancel")]
-        public async Task<ActionResult<SalesOrderDTO>> CancelSalesOrder(Guid id, CancelSalesOrderCommand command)
+        public async Task<ActionResult> CancelSalesOrder(Guid id, CancelSalesOrderCommand command)
+        {
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}/set-discount")]
+        public async Task<ActionResult> SetDiscountToSaleOrder(Guid id, SetDiscountToSaleOrderCommand command)
         {
             await Mediator.Send(command);
 

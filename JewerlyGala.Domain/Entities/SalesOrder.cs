@@ -29,5 +29,6 @@ namespace JewerlyGala.Domain.Entities
         public DateTime? CanceledAt { get; set; }
         public virtual Customer? CustomerNavigation { get; set; }
         public virtual ICollection<SaleOrderLine> SaleOrderLinesNavigation { get; set; } = [];
+        public virtual ICollection<SalePaymentOrder> SalePaymentsApplied { get; set; } = [];
     }
 }

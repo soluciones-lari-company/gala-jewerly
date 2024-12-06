@@ -270,3 +270,12 @@ Authorization: Bearer {{token}}
 {
   "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64"
 }
+###
+
+PATCH {{JewerlyGala.API_HostAddress}}/api/SalesOrder/23BF283A-1D71-46BC-B2B3-D638343A3F64/set-discount
+Content-Type: application/json
+Authorization: Bearer {{token}}
+{
+  "salesOrderId": "23BF283A-1D71-46BC-B2B3-D638343A3F64",
+  "discountPercentaje": 0
+}
