@@ -57,6 +57,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
                 if(request.Quantity < line.Quantity)
                 {
                     line.Quantity -= request.Quantity;
+                    line.SubTotal = line.Quantity * line.UnitPrice;
                     line.DiscountTotal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.SubTotal * (salesOrderRepository.Order.DiscountPercentaje / 100)) : 0;
                     line.Total = line.SubTotal - line.DiscountTotal;
                     line.UnitPriceFinal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.Total / line.Quantity) : line.UnitPrice;
