@@ -1,11 +1,13 @@
 ﻿using JewerlyGala.Application.Interfaces;
 using JewerlyGala.Domain.Identity;
 using JewerlyGala.Domain.Repositories;
+using JewerlyGala.Domain.Repositories.Accouting;
 using JewerlyGala.Domain.Repositories.Sales;
 using JewerlyGala.Infrastructure.Authorization;
 using JewerlyGala.Infrastructure.Persistence;
 using JewerlyGala.Infrastructure.Persistence.Intereptors;
 using JewerlyGala.Infrastructure.Repositories;
+using JewerlyGala.Infrastructure.Repositories.Accounting;
 using JewerlyGala.Infrastructure.Repositories.Sales;
 using JewerlyGala.Infrastructure.Seeders;
 using JewerlyGala.Infrastructure.Services;
@@ -13,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Identity.Client;
 
 namespace JewerlyGala.Infrastructure.Extensions
 {
@@ -51,6 +54,8 @@ namespace JewerlyGala.Infrastructure.Extensions
             services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
 
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
+
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             // add extra services
             services.AddScoped<IDateTime, DateTimeService>();

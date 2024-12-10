@@ -42,12 +42,12 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             if (salesOrderRepository.Order.CanceledAt != null)
             {
-                throw new NotFoundException("sales order canceled");
+                throw new InvalidOperationException("sales order canceled");
             }
 
             if (salesOrderRepository.Order.ConfirmedAt != null)
             {
-                throw new NotFoundException("sales order has been confirmed");
+                throw new InvalidOperationException("sales order has been confirmed");
             }
 
             var serie = await itemSerieRepository.GetByIdAsync(request.ItemSerieId);
@@ -59,7 +59,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             if (serie != null && serie.QuantityFree < request.Quantity)
             {
-                throw new InvalidParamException($"the serie {serie.SerieCode} has only {serie.QuantityFree} items available to order");
+                throw new InvalidOperationException($"the serie {serie.SerieCode} has only {serie.QuantityFree} items available to order");
             }
 
             // agregar linea

@@ -33,12 +33,12 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             if (salesOrderRepository.Order.CanceledAt != null)
             {
-                throw new NotFoundException("sales order canceled");
+                throw new InvalidOperationException("sales order canceled");
             }
 
             if (salesOrderRepository.Order.ConfirmedAt != null)
             {
-                throw new NotFoundException("sales order has been confirmed");
+                throw new InvalidOperationException("sales order has been confirmed");
             }
 
             var line = salesOrderRepository.Order.SaleOrderLinesNavigation.FirstOrDefault(e => e.ItemSerieId == request.ItemSerieId);

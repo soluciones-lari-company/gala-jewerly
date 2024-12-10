@@ -1,4 +1,5 @@
 ﻿using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,8 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
             logger.LogInformation("Running CreateSalesOrderCommand");
 
             var customer = await customerRepository.ExistsAsync(request.IdCustomer);
+
+            if (!customer) throw new NotFoundException("customer not found");
 
             salesOrderRepository.Order = new SalesOrder
             {

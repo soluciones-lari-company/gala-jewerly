@@ -30,6 +30,12 @@ namespace JewerlyGala.Infrastructure.Persistence
         internal DbSet<SaleOrderLine> SalesOrderLines => Set<SaleOrderLine>();
         #endregion
 
+        #region Accouting
+        internal DbSet<Account> Accounts => Set<Account>();
+        internal DbSet<SalePayment> SalePayments => Set<SalePayment>();
+        internal DbSet<SalePaymentOrder> SalePaymentOrders => Set<SalePaymentOrder>();
+        #endregion
+
         public JewerlyDbContext(
             DbContextOptions<JewerlyDbContext> options,
             AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor

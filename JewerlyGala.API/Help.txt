@@ -1,1 +1,42 @@
 add-migration accounts -startupproject JewerlyGala.API -project JewerlyGala.Infrastructure 
+
+ // arrange
+            var loggerMock = new Mock<ILogger<CreateSalesOrderCommandHandler>>();
+            var salesOrderRepositoryMock = new Mock<ISalesOrderRepository>();
+            var customerRepositoryMock = new Mock<ICustomerRepository>();
+
+            var command = new CreateSalesOrderCommand();
+
+            var idOrder = Guid.NewGuid();
+            var idOCustomer = Guid.NewGuid();
+            var order = new SalesOrder
+            {
+
+                IdCustomer = idOCustomer,
+                Date = new DateOnly(2024, 12, 6),
+                PaymentTerms = "",
+                PaymentMethod = "",
+                PaymentConditions = "",
+                SubTotal = 0,
+                DiscountPercentaje = 0,
+                DiscountTotal = 0,
+                Total = 0,
+                Zone = "Lira",
+            };
+            customerRepositoryMock.Setup( repo => repo.ExistsAsync(It.IsAny<Guid>() ) ).ReturnsAsync(true);
+
+            salesOrderRepositoryMock.Setup(repo => repo.Order)
+            .Returns(order);
+
+            salesOrderRepositoryMock.Setup(repo => repo.CreateAsync())
+                .ReturnsAsync(idOrder);
+
+            var commandHandler = new CreateSalesOrderCommandHandler(loggerMock.Object, salesOrderRepositoryMock.Object, customerRepositoryMock.Object);
+
+
+            // act
+            var result = await commandHandler.Handle(command, CancellationToken.None);
+
+            //Assert.IsTrue(result.Equals(idOrder));
+
+            salesOrderRepositoryMock.Verify(r => r.CreateAsync(), Times.Once);
