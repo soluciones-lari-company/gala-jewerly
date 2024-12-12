@@ -1,10 +1,8 @@
-﻿using JewerlyGala.Application.Features.SalesOrders.Commands.ConfirmSaleOrder;
-using JewerlyGala.Domain.Exceptions;
+﻿using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.CancelSalesOrder
 {
@@ -32,7 +30,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CancelSalesOrder
 
             if (salesOrderRepository.Order.CanceledAt != null)
             {
-                throw new NotFoundException("sales order canceled");
+                throw new InvalidOperationException("sales order canceled");
             }
 
             if (salesOrderRepository.Order.CanceledAt == null)
