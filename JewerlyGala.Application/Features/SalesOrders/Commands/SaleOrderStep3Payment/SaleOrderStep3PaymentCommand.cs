@@ -8,12 +8,19 @@ using System.Reflection;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Payment
 {
+    public class SaleOrderPayments
+    {
+        public Guid IdReceivingAccount { get; set; }
+        public decimal Total { get; set; }
+        public string PaymentTerms { get; set; } = string.Empty;
+    }
     public class SaleOrderStep3PaymentCommand : IRequest
     {
         public Guid SalesOrderId { get; set; }
         public string PaymentTerms { get; set; } = string.Empty;
         public string PaymentMethod { get; set; } = string.Empty;
         public string PaymentConditions { get; set; } = string.Empty;
+        public List<SaleOrderPayments> Payments { get; set; } = [];
     }
 
     public class SaleOrderStep3PaymentCommandHandler(
@@ -35,32 +42,30 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
 
             if (salesOrderRepository.Order.CanceledAt != null)
             {
-                throw new NotFoundException("sales order canceled");
+                throw new InvalidOperationException("sales order canceled");
             }
 
             if (salesOrderRepository.Order.ConfirmedAt != null)
             {
-                throw new NotFoundException("sales order has been confirmed");
+                throw new InvalidOperationException("sales order has been confirmed");
             }
 
             if (salesOrderRepository.Order.Total <= 0 || salesOrderRepository.Order.SaleOrderLinesNavigation.Count() == 0)
             {
-                throw new InvalidParamException("Please add items to this order first");
+                throw new InvalidOperationException("Please add items to this order first");
             }
 
             var paymentTerms = typeof(PaymentTerms).GetField(request.PaymentTerms.ToUpper(), BindingFlags.Static | BindingFlags.Public);
-            if(paymentTerms == null) throw new InvalidParamException("Payment Terms invalid");
 
-            //var paymentMethod = typeof(PaymentMethods).GetField(request.PaymentMethod.ToUpper(), BindingFlags.Static | BindingFlags.Public);
-            //if (paymentMethod == null) throw new InvalidParamException("payment Method invalid");
+            if(paymentTerms == null) 
+                throw new InvalidParamException("Payment Terms invalid");
 
             if(request.PaymentTerms.ToUpper() == PaymentTerms.PPD)
             {
                 var paymentConditions = typeof(PaymentConditions).GetField(request.PaymentConditions.ToUpper(), BindingFlags.Static | BindingFlags.Public);
-                if (paymentConditions == null) throw new InvalidParamException("Payment Conditions invalid");
+                if (paymentConditions == null) 
+                    throw new InvalidParamException("Payment Conditions invalid");
 
-
-                //if (request.PaymentConditions.ToUpper() == PaymentConditions.NET00) salesOrderRepository.Order.DueDate = salesOrderRepository.Order.Date.AddDays(7);
                 if (request.PaymentConditions.ToUpper() == PaymentConditions.NET07) salesOrderRepository.Order.DueDate = salesOrderRepository.Order.Date.AddDays(7);
                 else if (request.PaymentConditions.ToUpper() == PaymentConditions.NET10) salesOrderRepository.Order.DueDate = salesOrderRepository.Order.Date.AddDays(10);
                 else if (request.PaymentConditions.ToUpper() == PaymentConditions.NET15) salesOrderRepository.Order.DueDate = salesOrderRepository.Order.Date.AddDays(15);
