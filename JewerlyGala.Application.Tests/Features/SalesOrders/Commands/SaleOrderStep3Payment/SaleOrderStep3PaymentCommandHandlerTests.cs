@@ -25,7 +25,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
         }
 
         [Test()]
-        public void Handle_InvalidOperationException_totalPaymentsDifferences()
+        public void Handle_InvalidOperationException_noPaymentsAdded()
         {
             var command = new SaleOrderStep3PaymentCommand
             {
