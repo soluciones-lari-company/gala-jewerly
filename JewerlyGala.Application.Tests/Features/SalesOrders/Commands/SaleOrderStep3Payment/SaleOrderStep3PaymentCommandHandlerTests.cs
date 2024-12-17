@@ -3,10 +3,7 @@ using JewerlyGala.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 using JewerlyGala.Domain.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using JewerlyGala.Domain.Exceptions;
-using Castle.Components.DictionaryAdapter;
-using JewerlyGala.Domain.Constans;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Payment.Tests
 {

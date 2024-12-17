@@ -8,7 +8,10 @@ namespace JewerlyGala.Domain.Entities
         public decimal Total { get; set; }
         public Guid IdSaleOrder { get; set; }
         public Guid IdSalePayment { get; set; }
+        public Guid IdAccount { get; set; }
+
         public virtual SalesOrder? SaleOrder { get; set; }
         public virtual SalePayment? PaymentHeader { get; set; }
+        public virtual Account? Account { get; set; }
     }
 }

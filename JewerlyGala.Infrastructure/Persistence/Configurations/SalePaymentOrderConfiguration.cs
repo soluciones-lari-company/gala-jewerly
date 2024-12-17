@@ -33,6 +33,10 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
             builder.HasOne(t => t.PaymentHeader)
                 .WithMany(t => t.SalePaymentsApplied)
                 .HasForeignKey(t => t.IdSalePayment);
+
+            builder.HasOne(t => t.Account)
+            .WithMany(t => t.InCommingPayments)
+            .HasForeignKey(t => t.IdAccount);
         }
     }
 }
