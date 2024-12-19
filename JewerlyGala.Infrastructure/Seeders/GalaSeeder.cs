@@ -39,6 +39,14 @@ namespace JewerlyGala.Infrastructure.Seeders
                 await dbContext.SaveChangesAsync();
             }
 
+            if (!dbContext.Accounts.Any())
+            {
+                var accounts = GetAccounts();
+
+                dbContext.Accounts.AddRange(accounts);
+                await dbContext.SaveChangesAsync();
+            }
+
             if (!dbContext.ItemMaterials.Any())
             {
                 var materials = GetMaterials();
@@ -46,6 +54,17 @@ namespace JewerlyGala.Infrastructure.Seeders
                 dbContext.ItemMaterials.AddRange(materials);
                 await dbContext.SaveChangesAsync();
             }
+        }
+
+        public IEnumerable<Account> GetAccounts()
+        {
+            List<Account> suppliers = [
+                    new Account { Name = "Gala" , IsActive = true, Comments = "Cuenta para mostrador(solo efectivo)", PaymentMethodAcceptable = "01" },
+                    new Account { Name = "Gabriela Transferencias" , IsActive = true, Comments = "Cuenta para transferencias a gaby", PaymentMethodAcceptable = "03" },
+                    new Account { Name = "Luis Transferencias" , IsActive = true, Comments = "Cuenta para transferencias a luis", PaymentMethodAcceptable = "03" },
+                ];
+
+            return suppliers;
         }
 
         public IEnumerable<Supplier> GetSuppliers()
