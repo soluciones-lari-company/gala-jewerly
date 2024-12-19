@@ -1,4 +1,5 @@
 add-migration accounts -startupproject JewerlyGala.API -project JewerlyGala.Infrastructure 
+remove-migration
 
  // arrange
             var loggerMock = new Mock<ILogger<CreateSalesOrderCommandHandler>>();

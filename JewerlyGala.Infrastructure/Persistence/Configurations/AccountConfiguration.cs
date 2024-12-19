@@ -18,7 +18,9 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
             builder.Property(t => t.Name)
                 .HasMaxLength(100)
                 .IsRequired();
-
+            builder.Property(t => t.PaymentMethodAcceptable)
+               .HasMaxLength(3)
+               .IsRequired();
             builder.Property(t => t.Comments)
                 .HasMaxLength(500)
                 .IsRequired();

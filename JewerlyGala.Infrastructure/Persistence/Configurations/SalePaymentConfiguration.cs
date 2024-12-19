@@ -21,17 +21,10 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
             builder.Property(t => t.IdCustomer)
                 .IsRequired();
 
+            builder.Property(t => t.IdAccount)
+                .IsRequired();
+
             builder.Property(e => e.Total)
-                .HasColumnType("decimal(10, 2)")
-                .HasDefaultValue(0)
-                .IsRequired();
-
-            builder.Property(e => e.TotalApplied)
-                .HasColumnType("decimal(10, 2)")
-                .HasDefaultValue(0)
-                .IsRequired();
-
-            builder.Property(e => e.TotalFree)
                 .HasColumnType("decimal(10, 2)")
                 .HasDefaultValue(0)
                 .IsRequired();
@@ -43,6 +36,15 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
             builder.HasOne(t => t.Customer)
                 .WithMany(t => t.Payments)
                 .HasForeignKey(t => t.IdCustomer);
+
+            builder.HasOne(t => t.Account)
+                .WithMany(t => t.InCommingPayments)
+                .HasForeignKey(t => t.IdAccount);
+
+
+            builder.HasOne(t => t.SalesOrder)
+                .WithMany(t => t.PaymentsNavigation)
+                .HasForeignKey(t => t.IdSaleOrder);
         }
     }
 }

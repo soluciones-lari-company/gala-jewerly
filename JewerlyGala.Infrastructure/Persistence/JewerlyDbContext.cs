@@ -33,7 +33,6 @@ namespace JewerlyGala.Infrastructure.Persistence
         #region Accouting
         internal DbSet<Account> Accounts => Set<Account>();
         internal DbSet<SalePayment> SalePayments => Set<SalePayment>();
-        internal DbSet<SalePaymentOrder> SalePaymentOrders => Set<SalePaymentOrder>();
         #endregion
 
         public JewerlyDbContext(

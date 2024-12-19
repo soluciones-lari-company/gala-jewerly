@@ -8,6 +8,12 @@ namespace JewerlyGala.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string Comments { get; set; } = string.Empty;
         public bool IsActive { get; set; }
-        public virtual ICollection<SalePaymentOrder> InCommingPayments { get; set; } = [];
+        /// <summary>
+        /// 01 - Efectivo
+        /// 03 - transferencia de fondos
+        /// 99 - por definir
+        /// </summary>
+        public string PaymentMethodAcceptable { get; set; } = default!;
+        public virtual ICollection<SalePayment> InCommingPayments { get; set; } = [];
     }
 }

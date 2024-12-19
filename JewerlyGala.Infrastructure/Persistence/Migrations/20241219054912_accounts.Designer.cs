@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JewerlyGala.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(JewerlyDbContext))]
-    [Migration("20241206063054_payments")]
-    partial class payments
+    [Migration("20241219054912_accounts")]
+    partial class accounts
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,6 +56,11 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("PaymentMethodAcceptable")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
 
                     b.HasKey("Id")
                         .HasName("PK_Account_id");
@@ -462,9 +467,6 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasDefaultValueSql("(newid())");
 
-                    b.Property<Guid?>("AccountId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
@@ -474,7 +476,13 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("IdAccount")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("IdCustomer")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("IdSaleOrder")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("LastModified")
@@ -493,64 +501,16 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
                         .HasColumnType("decimal(10, 2)")
                         .HasDefaultValue(0m);
 
-                    b.Property<decimal>("TotalApplied")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(10, 2)")
-                        .HasDefaultValue(0m);
-
-                    b.Property<decimal>("TotalFree")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(10, 2)")
-                        .HasDefaultValue(0m);
-
                     b.HasKey("Id")
                         .HasName("PK_SalePayment_id");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("IdAccount");
 
                     b.HasIndex("IdCustomer");
 
-                    b.ToTable("SalePayment", (string)null);
-                });
-
-            modelBuilder.Entity("JewerlyGala.Domain.Entities.SalePaymentOrder", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
-                        .HasDefaultValueSql("(newid())");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("IdSaleOrder")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdSalePayment")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("Total")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("decimal(10, 2)")
-                        .HasDefaultValue(0m);
-
-                    b.HasKey("Id")
-                        .HasName("PK_SalePaymentOrder_id");
-
                     b.HasIndex("IdSaleOrder");
 
-                    b.HasIndex("IdSalePayment");
-
-                    b.ToTable("SalePaymentOrder", (string)null);
+                    b.ToTable("SalePayment", (string)null);
                 });
 
             modelBuilder.Entity("JewerlyGala.Domain.Entities.SalesOrder", b =>
@@ -961,9 +921,11 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("JewerlyGala.Domain.Entities.SalePayment", b =>
                 {
-                    b.HasOne("JewerlyGala.Domain.Entities.Account", null)
-                        .WithMany("Payments")
-                        .HasForeignKey("AccountId");
+                    b.HasOne("JewerlyGala.Domain.Entities.Account", "Account")
+                        .WithMany("InCommingPayments")
+                        .HasForeignKey("IdAccount")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("JewerlyGala.Domain.Entities.Customer", "Customer")
                         .WithMany("Payments")
@@ -971,26 +933,15 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("JewerlyGala.Domain.Entities.SalesOrder", "SalesOrder")
+                        .WithMany("PaymentsNavigation")
+                        .HasForeignKey("IdSaleOrder");
+
+                    b.Navigation("Account");
+
                     b.Navigation("Customer");
-                });
 
-            modelBuilder.Entity("JewerlyGala.Domain.Entities.SalePaymentOrder", b =>
-                {
-                    b.HasOne("JewerlyGala.Domain.Entities.SalesOrder", "SaleOrder")
-                        .WithMany("SalePaymentsApplied")
-                        .HasForeignKey("IdSaleOrder")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("JewerlyGala.Domain.Entities.SalePayment", "PaymentHeader")
-                        .WithMany("SalePaymentsApplied")
-                        .HasForeignKey("IdSalePayment")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PaymentHeader");
-
-                    b.Navigation("SaleOrder");
+                    b.Navigation("SalesOrder");
                 });
 
             modelBuilder.Entity("JewerlyGala.Domain.Entities.SalesOrder", b =>
@@ -1057,7 +1008,7 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("JewerlyGala.Domain.Entities.Account", b =>
                 {
-                    b.Navigation("Payments");
+                    b.Navigation("InCommingPayments");
                 });
 
             modelBuilder.Entity("JewerlyGala.Domain.Entities.Customer", b =>
@@ -1104,16 +1055,11 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
                     b.Navigation("Features");
                 });
 
-            modelBuilder.Entity("JewerlyGala.Domain.Entities.SalePayment", b =>
-                {
-                    b.Navigation("SalePaymentsApplied");
-                });
-
             modelBuilder.Entity("JewerlyGala.Domain.Entities.SalesOrder", b =>
                 {
-                    b.Navigation("SaleOrderLinesNavigation");
+                    b.Navigation("PaymentsNavigation");
 
-                    b.Navigation("SalePaymentsApplied");
+                    b.Navigation("SaleOrderLinesNavigation");
                 });
 
             modelBuilder.Entity("JewerlyGala.Domain.Entities.Supplier", b =>
