@@ -1,13 +1,26 @@
-﻿using JewerlyGala.Domain.Entities;
+﻿using AutoMapper.Features;
+using JewerlyGala.Domain.Entities;
 using JewerlyGala.Domain.Exceptions;
+using JewerlyGala.Domain.Queries;
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
 
 namespace JewerlyGala.Infrastructure.Repositories
 {
     public class ItemSerieRepository(JewerlyDbContext dbContext) : IItemSerieRepository
     {
+        private IQueryable<QItemSerieFeatureValues> query = from t01 in dbContext.ItemSerieToFeatureAndValues
+                                                            join t02 in dbContext.ItemFeatureToValues on t01.ItemFeatureToValueId equals t02.Id
+                                                            join t03 in dbContext.ItemFeatures on t02.FeatureId equals t03.Id
+                                                            join t04 in dbContext.ItemFeatureValues on t02.ValueId equals t04.Id
+                                                            select new QItemSerieFeatureValues
+                                                            {
+                                                                SerieId = t01.ItemSerieId,
+                                                                Feature = t03.FeatureName,
+                                                                Value = t04.ValueName
+                                                            };
         public async Task<Guid> CreateAsync(ItemSerie itemSerie)
         {
             if(itemSerie == null) 
@@ -29,7 +42,10 @@ namespace JewerlyGala.Infrastructure.Repositories
 
         public async Task<ICollection<ItemSerie>> GetAllAsync()
         {
-            var series = await dbContext.ItemSeries.OrderBy(e => e.Created).ToListAsync();
+            var series = await dbContext.ItemSeries
+                    .Include(e => e.ItemMaterialNav)
+                    .Include(e => e.SupplierNav)
+                    .OrderBy(e => e.Created).ToListAsync();
 
             return series;
         }
@@ -62,6 +78,11 @@ namespace JewerlyGala.Infrastructure.Repositories
         public async Task<ItemSerie?> GetBySerieCodeAsync(string serieCode)
         {
             return await dbContext.ItemSeries.FirstOrDefaultAsync(e => e.SerieCode == serieCode);
+        }
+
+        public async Task<ICollection<QItemSerieFeatureValues>> GetFeaturesValues(Guid id)
+        {
+            return await query.Where(e => e.SerieId == id).ToListAsync();
         }
 
         public async Task<bool> IsUsableSerieCodeAsync(string serieCode)

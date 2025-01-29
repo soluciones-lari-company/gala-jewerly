@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Constans;
 using System.Reflection;
+using JewerlyGala.Domain.Repositories.Accouting;
+using JewerlyGala.Domain.Entities;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Payment
 {
@@ -12,7 +14,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
     {
         public Guid IdReceivingAccount { get; set; }
         public decimal Total { get; set; }
-        public string PaymentTerms { get; set; } = string.Empty;
+        public string PaymentMethod { get; set; } = string.Empty;
     }
     public class SaleOrderStep3PaymentCommand : IRequest
     {
@@ -20,13 +22,15 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
         public string PaymentTerms { get; set; } = string.Empty;
         public string PaymentMethod { get; set; } = string.Empty;
         public string PaymentConditions { get; set; } = string.Empty;
+        public bool AppliedOverAmoutToAccount { get; set; }
         public List<SaleOrderPayments> Payments { get; set; } = [];
+        public List<Guid> PaymentsDel { get; set; } = [];
     }
 
     public class SaleOrderStep3PaymentCommandHandler(
         ILogger<SaleOrderStep3PaymentCommandHandler> logger,
         ISalesOrderRepository salesOrderRepository,
-        IItemSerieRepository itemSerieRepository
+        ISalePaymentRepository paymentRepository
         ) : IRequestHandler<SaleOrderStep3PaymentCommand>
     {
         public async Task Handle(SaleOrderStep3PaymentCommand request, CancellationToken cancellationToken)
@@ -34,33 +38,48 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             logger.LogInformation("running SaleOrderStep3PaymentCommand");
 
             var order = await salesOrderRepository.GetByIdAsync(request.SalesOrderId);
-
+            
+            #region validate order
             if (!order)
-            {
                 throw new NotFoundException("sales order not found");
-            }
 
             if (salesOrderRepository.Order.CanceledAt != null)
-            {
                 throw new InvalidOperationException("sales order canceled");
-            }
 
             if (salesOrderRepository.Order.ConfirmedAt != null)
-            {
                 throw new InvalidOperationException("sales order has been confirmed");
-            }
 
             if (salesOrderRepository.Order.Total <= 0 || salesOrderRepository.Order.SaleOrderLinesNavigation.Count() == 0)
-            {
                 throw new InvalidOperationException("Please add items to this order first");
-            }
+            #endregion
 
+            #region validate payment terms
             var paymentTerms = typeof(PaymentTerms).GetField(request.PaymentTerms.ToUpper(), BindingFlags.Static | BindingFlags.Public);
 
-            if(paymentTerms == null) 
+            if (paymentTerms == null)
                 throw new InvalidParamException("Payment Terms invalid");
+            #endregion
 
-            if(request.PaymentTerms.ToUpper() == PaymentTerms.PPD)
+
+            if (request.PaymentTerms.ToUpper() == PaymentTerms.PUE)
+            {
+                if (request.Payments == null || request.Payments != null && request.Payments.Count() == 0)
+                {
+                    throw new InvalidParamException("please add payments to the sale order");
+                }
+                else
+                {
+                    var totalPayments = request.Payments.Sum(a => a.Total);
+                    if(totalPayments < salesOrderRepository.Order.Total)
+                    {
+                        throw new InvalidParamException("the total amount of your payments is less than the order total");
+                    }
+
+                    
+                }
+            }
+
+            if (request.PaymentTerms.ToUpper() == PaymentTerms.PPD)
             {
                 var paymentConditions = typeof(PaymentConditions).GetField(request.PaymentConditions.ToUpper(), BindingFlags.Static | BindingFlags.Public);
                 if (paymentConditions == null) 
@@ -79,8 +98,33 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             salesOrderRepository.Order.PaymentMethod = request.PaymentMethod.ToUpper();
             salesOrderRepository.Order.PaymentConditions = request.PaymentConditions.ToUpper();
 
+            
+            paymentRepository.RemoveRange(salesOrderRepository.Order.PaymentsNavigation);
+
+            await AddPayments(request.Payments, salesOrderRepository.Order.IdCustomer, salesOrderRepository.Order.Id);
 
             await salesOrderRepository.UpdateAsync();
+        }
+
+        private async Task AddPayments(List<SaleOrderPayments> paymentsRequest, Guid idCustomer, Guid idOrder)
+        {
+            List<SalePayment> payments = [];
+
+            foreach (var item in paymentsRequest)
+            {
+                payments.Add(new SalePayment
+                {
+                    PaymentMethod = item.PaymentMethod,
+                    Total = item.Total,
+                    IdAccount = item.IdReceivingAccount,
+                    IdCustomer = idCustomer,
+                    IdSaleOrder = idOrder,
+                    Customer = null, 
+                    Account = null,
+                });
+            }
+
+            await paymentRepository.AddRange(payments);
         }
     }
 }

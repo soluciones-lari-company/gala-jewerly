@@ -7,11 +7,14 @@ using JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Paymen
 using JewerlyGala.Application.Features.SalesOrders.Commands.SetDiscountToSaleOrder;
 using JewerlyGala.Application.Features.SalesOrders.DTOs;
 using JewerlyGala.Application.Features.SalesOrders.Queries.GetSalesOrderById;
+using JewerlyGala.Domain.Constans;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace JewerlyGala.API.Controllers
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class SalesOrderController : ApiControllerBase
     {
         [HttpPost]

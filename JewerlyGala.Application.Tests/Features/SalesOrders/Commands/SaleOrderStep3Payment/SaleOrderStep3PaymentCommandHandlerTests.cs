@@ -1,9 +1,10 @@
 ﻿using JewerlyGala.Domain.Repositories.Sales;
-using JewerlyGala.Domain.Repositories;
 using Microsoft.Extensions.Logging;
 using Moq;
 using JewerlyGala.Domain.Entities;
 using JewerlyGala.Domain.Exceptions;
+using JewerlyGala.Domain.Repositories.Accouting;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Payment.Tests
 {
@@ -12,65 +13,32 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
     {
         private Mock<ILogger<SaleOrderStep3PaymentCommandHandler>> loggerMock;
         private Mock<ISalesOrderRepository> salesOrderRepositoryMock;
-        private Mock<IItemSerieRepository> itemSerieRepositoryMock;
+        private Mock<ISalePaymentRepository> paymentRepository;
 
         public SaleOrderStep3PaymentCommandHandlerTests()
         {
             loggerMock = new Mock<ILogger<SaleOrderStep3PaymentCommandHandler>>();
             salesOrderRepositoryMock = new Mock<ISalesOrderRepository>();
-            itemSerieRepositoryMock = new Mock<IItemSerieRepository>();
+            paymentRepository = new Mock<ISalePaymentRepository>();
         }
 
         [Test()]
-        public void Handle_InvalidOperationException_noPaymentsAdded()
+        public void Handle_InvalidOperationException_paymentsTotalLessThanOrderTotal()
         {
             var command = new SaleOrderStep3PaymentCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                PaymentTerms = "PPD",
+                PaymentTerms = "PUE",
                 PaymentMethod = "99",
-                PaymentConditions = "NET07"
-            };
-
-            #region set order entities
-            var order = new SalesOrder
-            {
-                Id = command.SalesOrderId,
-                IdCustomer = Guid.NewGuid(),
-                Date = new DateOnly(2024, 12, 12),
-                PaymentTerms = "PPD",
-                PaymentMethod = "",
                 PaymentConditions = "NET07",
-                SubTotal = 0,
-                DiscountPercentaje = 0,
-                DiscountTotal = 0,
-                Total = 0,
-                Zone = "Lira",
-                CanceledAt = null,
-                ConfirmedAt = null
+                AppliedOverAmoutToAccount = false,
+                Payments = [
+                    new SaleOrderPayments { IdReceivingAccount = Guid.NewGuid(), PaymentMethod = "01", Total = 100 },
+                    new SaleOrderPayments {  IdReceivingAccount = Guid.NewGuid(), PaymentMethod = "03", Total = 200 },
+                ]
             };
 
-            var line = new SaleOrderLine();
-            line.Id = 1;
-            line.SalesOrderId = command.SalesOrderId;
-            line.NumLine = 0;
-            line.ItemSerieId = Guid.NewGuid();
-            line.SerieCode = "A300";
-            line.Descripcion = "Broqueles medida 2mm en oro 10k";
-            line.Quantity = 5;
-            line.UnitPrice = 260;
-            line.SubTotal = line.Quantity * line.UnitPrice;
-            line.DiscountPercentaje = 0;
-            line.DiscountTotal =  0;
-            line.Total = line.SubTotal - line.DiscountTotal;
-            line.UnitPriceFinal = (line.Total / line.Quantity);
-
-            order.SaleOrderLinesNavigation.Add(line);
-
-            order.SubTotal = order.SaleOrderLinesNavigation.Sum(e => e.SubTotal);
-            order.DiscountTotal = order.SaleOrderLinesNavigation.Sum(e => e.DiscountTotal);
-            order.Total = order.SaleOrderLinesNavigation.Sum(e => e.Total);
-            #endregion
+            var order = SetSaleOrderWithItems(command.SalesOrderId);
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
@@ -78,7 +46,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidParamException>(async () =>
@@ -88,7 +56,39 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
 
             // Assert       
             Assert.IsNotNull(exception);
-            Assert.That(exception.Message, Is.EqualTo("no payments added to the order"));
+            Assert.That(exception.Message, Is.EqualTo("the total amount of your payments is less than the order total"));
+
+        }
+        [Test()]
+        public void Handle_InvalidOperationException_noPaymentsAddedWithPueMethod()
+        {
+            var command = new SaleOrderStep3PaymentCommand
+            {
+                SalesOrderId = Guid.NewGuid(),
+                PaymentTerms = "PUE",
+                PaymentMethod = "99",
+                PaymentConditions = "NET07"
+            };
+
+            var order = SetSaleOrderWithItems(command.SalesOrderId);
+
+            salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
+            salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
+
+            var handler = new SaleOrderStep3PaymentCommandHandler(
+                loggerMock.Object,
+                salesOrderRepositoryMock.Object,
+                paymentRepository.Object
+                );
+            //act
+            var exception = Assert.ThrowsAsync<InvalidParamException>(async () =>
+            {
+                await handler.Handle(command, default);
+            });
+
+            // Assert       
+            Assert.IsNotNull(exception);
+            Assert.That(exception.Message, Is.EqualTo("please add payments to the sale order"));
 
         }
         [Test()]
@@ -101,43 +101,8 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
                 PaymentMethod = "",
                 PaymentConditions = ""
             };
-            var order = new SalesOrder
-            {
-                Id = command.SalesOrderId,
-                IdCustomer = Guid.NewGuid(),
-                Date = new DateOnly(2024, 12, 12),
-                PaymentTerms = "",
-                PaymentMethod = "",
-                PaymentConditions = "NET07",
-                SubTotal = 0,
-                DiscountPercentaje = 0,
-                DiscountTotal = 0,
-                Total = 0,
-                Zone = "Lira",
-                CanceledAt = null,
-                ConfirmedAt = null
-            };
 
-            var line = new SaleOrderLine();
-            line.Id = 1;
-            line.SalesOrderId = command.SalesOrderId;
-            line.NumLine = 0;
-            line.ItemSerieId = Guid.NewGuid();
-            line.SerieCode = "A300";
-            line.Descripcion = "Broqueles medida 2mm en oro 10k";
-            line.Quantity = 5;
-            line.UnitPrice = 260;
-            line.SubTotal = line.Quantity * line.UnitPrice;
-            line.DiscountPercentaje = 0;
-            line.DiscountTotal = 0;
-            line.Total = line.SubTotal - line.DiscountTotal;
-            line.UnitPriceFinal = (line.Total / line.Quantity);
-
-            order.SaleOrderLinesNavigation.Add(line);
-
-            order.SubTotal = order.SaleOrderLinesNavigation.Sum(e => e.SubTotal);
-            order.DiscountTotal = order.SaleOrderLinesNavigation.Sum(e => e.DiscountTotal);
-            order.Total = order.SaleOrderLinesNavigation.Sum(e => e.Total);
+            var order = SetSaleOrderWithItems(command.SalesOrderId);
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
@@ -145,7 +110,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidParamException>(async () =>
@@ -165,43 +130,8 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
                 SalesOrderId = Guid.NewGuid(),
                 
             };
-            var order = new SalesOrder
-            {
-                Id = command.SalesOrderId,
-                IdCustomer = Guid.NewGuid(),
-                Date = new DateOnly(2024, 12, 12),
-                PaymentTerms = "",
-                PaymentMethod = "",
-                PaymentConditions = "NET07",
-                SubTotal = 0,
-                DiscountPercentaje = 0,
-                DiscountTotal = 0,
-                Total = 0,
-                Zone = "Lira",
-                CanceledAt = null,
-                ConfirmedAt = null
-            };
 
-            var line = new SaleOrderLine();
-            line.Id = 1;
-            line.SalesOrderId = command.SalesOrderId;
-            line.NumLine = 0;
-            line.ItemSerieId = Guid.NewGuid();
-            line.SerieCode = "A300";
-            line.Descripcion = "Broqueles medida 2mm en oro 10k";
-            line.Quantity = 5;
-            line.UnitPrice = 260;
-            line.SubTotal = line.Quantity * line.UnitPrice;
-            line.DiscountPercentaje = 0;
-            line.DiscountTotal = 0;
-            line.Total = line.SubTotal - line.DiscountTotal;
-            line.UnitPriceFinal = (line.Total / line.Quantity);
-
-            order.SaleOrderLinesNavigation.Add(line);
-
-            order.SubTotal = order.SaleOrderLinesNavigation.Sum(e => e.SubTotal);
-            order.DiscountTotal = order.SaleOrderLinesNavigation.Sum(e => e.DiscountTotal);
-            order.Total = order.SaleOrderLinesNavigation.Sum(e => e.Total);
+            var order = SetSaleOrderWithItems(command.SalesOrderId);
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
@@ -209,7 +139,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidParamException>(async () =>
@@ -250,7 +180,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -291,7 +221,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -331,7 +261,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -356,7 +286,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             var handler = new SaleOrderStep3PaymentCommandHandler(
                 loggerMock.Object,
                 salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                paymentRepository.Object
                 );
 
             //act
@@ -368,6 +298,52 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Pa
             // Assert       
             Assert.IsNotNull(exception);
             Assert.That(exception.Message, Is.EqualTo("sales order not found"));
+        }
+
+
+        private SalesOrder SetSaleOrderWithItems( Guid IdOrder)
+        {
+            #region set order entities
+            var order = new SalesOrder
+            {
+                Id = IdOrder,
+                IdCustomer = Guid.NewGuid(),
+                Date = new DateOnly(2024, 12, 12),
+                PaymentTerms = "PPD",
+                PaymentMethod = "",
+                PaymentConditions = "NET07",
+                SubTotal = 0,
+                DiscountPercentaje = 0,
+                DiscountTotal = 0,
+                Total = 0,
+                Zone = "Lira",
+                CanceledAt = null,
+                ConfirmedAt = null
+            };
+
+            var line = new SaleOrderLine();
+            line.Id = 1;
+            line.SalesOrderId = IdOrder;
+            line.NumLine = 0;
+            line.ItemSerieId = Guid.NewGuid();
+            line.SerieCode = "A300";
+            line.Descripcion = "Broqueles medida 2mm en oro 10k";
+            line.Quantity = 5;
+            line.UnitPrice = 260;
+            line.SubTotal = line.Quantity * line.UnitPrice;
+            line.DiscountPercentaje = 0;
+            line.DiscountTotal = 0;
+            line.Total = line.SubTotal - line.DiscountTotal;
+            line.UnitPriceFinal = (line.Total / line.Quantity);
+
+            order.SaleOrderLinesNavigation.Add(line);
+
+            order.SubTotal = order.SaleOrderLinesNavigation.Sum(e => e.SubTotal);
+            order.DiscountTotal = order.SaleOrderLinesNavigation.Sum(e => e.DiscountTotal);
+            order.Total = order.SaleOrderLinesNavigation.Sum(e => e.Total);
+            #endregion
+
+            return order;
         }
     }
 }

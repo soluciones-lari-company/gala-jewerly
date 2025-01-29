@@ -1,4 +1,5 @@
 ﻿using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Queries;
 
 namespace JewerlyGala.Domain.Repositories
 {
@@ -7,6 +8,7 @@ namespace JewerlyGala.Domain.Repositories
         public Task<Guid> CreateAsync(ItemSerie itemSerie);
         public Task<ICollection<ItemSerie>> GetAllAsync();
         public Task<ICollection<ItemSerie>> GetByMultipleIdsAsync(List<Guid> ids);
+        public Task<ICollection<QItemSerieFeatureValues>> GetFeaturesValues(Guid id);
         public Task<ItemSerie?> GetByIdAsync(Guid id);
         public Task<ItemSerie?> GetBySerieCodeAsync(string serieCod);
         public Task<bool> IsUsableSerieCodeAsync(string serieCode);

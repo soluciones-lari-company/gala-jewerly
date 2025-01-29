@@ -2,12 +2,16 @@
 using JewerlyGala.Application.Features.Suppliers.DTOs;
 using JewerlyGala.Application.Features.Suppliers.Queries.GetAllSuppliers;
 using JewerlyGala.Application.Features.Suppliers.Queries.GetSupplierById;
+using JewerlyGala.Domain.Constans;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewerlyGala.API.Controllers
 {
+    //[Authorize(Roles = UserRoles.Admin)]
     public class SupplierController : ApiControllerBase
     {
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<ActionResult<Guid>> CreateSupplier(CreateSupplierCommand command)
         {

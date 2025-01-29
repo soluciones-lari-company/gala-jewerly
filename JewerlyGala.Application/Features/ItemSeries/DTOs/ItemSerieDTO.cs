@@ -3,6 +3,7 @@ using JewerlyGala.Application.Features.ItemMaterials.DTOs;
 using JewerlyGala.Application.Features.Suppliers.DTOs;
 using JewerlyGala.Application.Mapping;
 using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Queries;
 
 namespace JewerlyGala.Application.Features.ItemSeries.DTOs
 {
@@ -23,7 +24,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.DTOs
         public decimal PurchaseUnitPrice { get; set; }
         public int SalePercentRentability { get; set; }
         public decimal SaleUnitPrice { get; set; }
-
+        public ICollection<QItemSerieFeatureValues> FeatureValues { get; set; } = [];
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ItemSerie, ItemSerieDTO>()

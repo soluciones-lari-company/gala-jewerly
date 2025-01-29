@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace JewerlyGala.API.Controllers
 {
-    public class IdentityController : ApiControllerBase
+    public class UsersController : ApiControllerBase
     {
         [HttpPost("user-role")]
         [Authorize(Roles = UserRoles.Admin)]

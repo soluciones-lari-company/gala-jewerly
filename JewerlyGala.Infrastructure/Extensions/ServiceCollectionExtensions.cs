@@ -56,6 +56,7 @@ namespace JewerlyGala.Infrastructure.Extensions
             services.AddScoped<IItemModelRepository, ItemModelsRepository>();
 
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<ISalePaymentRepository, SalePaymentRepository>();
 
             // add extra services
             services.AddScoped<IDateTime, DateTimeService>();

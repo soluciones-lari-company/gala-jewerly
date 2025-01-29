@@ -41,8 +41,14 @@ namespace JewerlyGala.Application.Features.ItemSeries.Queries.GetAllItemSeries
 
                 return mapper.Map<IEnumerable<ItemSerieDTO>>(series);
             }
+            else
+            {
+                var series = await itemSerieRepository.GetAllAsync();
 
-            return [];
+                return mapper.Map<IEnumerable<ItemSerieDTO>>(series);
+
+            }
+
         }
     }
 }

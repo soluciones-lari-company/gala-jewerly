@@ -16,8 +16,8 @@ namespace JewerlyGala.Domain.Entities
         /// 99 - por definir
         /// </summary>
         public string PaymentMethod { get; set; } = default!;
-        public virtual Customer Customer { get; set; } = new();
-        public virtual Account Account { get; set; } = new();
+        public virtual Customer? Customer { get; set; } = new();
+        public virtual Account? Account { get; set; } = new();
         public virtual SalesOrder? SalesOrder { get; set; }
     }
 }

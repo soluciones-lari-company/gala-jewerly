@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace JewerlyGala.API.Controllers
 {
     [ApiController]
-    [ApiExceptionFilter]
+    //[ApiExceptionFilter]
     [Route("api/[controller]")]
     public abstract class ApiControllerBase : ControllerBase
     {

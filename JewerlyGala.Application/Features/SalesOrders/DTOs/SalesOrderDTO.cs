@@ -22,12 +22,14 @@ namespace JewerlyGala.Application.Features.SalesOrders.DTOs
         public DateTime? CanceledAt { get; set; }
         public virtual CustomerDTO? Customer { get; set; }
         public virtual ICollection<SaleOrderLineDTO> Lines { get; set; } = [];
+        public virtual ICollection<SalePaymentDTO> Payments { get; set; } = [];
 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<SalesOrder, SalesOrderDTO>()
                 .ForMember(d => d.Customer, opt => opt.MapFrom(e => e.CustomerNavigation))
-                .ForMember(d => d.Lines, opt => opt.MapFrom(e => e.SaleOrderLinesNavigation));
+                .ForMember(d => d.Lines, opt => opt.MapFrom(e => e.SaleOrderLinesNavigation))
+                .ForMember(d => d.Payments, opt => opt.MapFrom(e => e.PaymentsNavigation));
         }
     }
 }

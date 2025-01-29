@@ -13,12 +13,58 @@ public class ApiExceptionFilterAttribute : ExceptionFilterAttribute
         // Register known exception types and handlers.
         _exceptionHandlers = new Dictionary<Type, Action<ExceptionContext>>
             {
+                { typeof(InvalidParamException), HandleInvalidParamException },
+                { typeof(InvalidOperationException), HandleInvalidOperationException },
                 { typeof(Exception), HandleValidationException },
                 { typeof(ValidationException), HandleValidationException },
                 { typeof(NotFoundException), HandleNotFoundException },
                 { typeof(UnauthorizedAccessException), HandleUnauthorizedAccessException },
                 //{ typeof(ForbiddenAccessException), HandleForbiddenAccessException },
             };
+    }
+
+    private void HandleInvalidParamException(ExceptionContext context)
+    {
+        var exception = (InvalidParamException)context.Exception;
+
+        context.ExceptionHandled = true;
+        //-------------------
+        var details = new ProblemDetails
+        {
+            Status = StatusCodes.Status400BadRequest,
+            Title = "Invalid param",
+            Detail = exception.Message,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
+        };
+
+        context.ExceptionHandled = true;
+    }
+
+    private void HandleInvalidOperationException(ExceptionContext context)
+    {
+        var exception = (InvalidOperationException)context.Exception;
+
+        context.ExceptionHandled = true;
+        //-------------------
+        var details = new ProblemDetails
+        {
+            Status = StatusCodes.Status409Conflict,
+            Title = "Invalid operation",
+            Detail = exception.Message,
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.3"
+        };
+
+        context.Result = new ObjectResult(details)
+        {
+            StatusCode = StatusCodes.Status409Conflict
+        };
+
+        context.ExceptionHandled = true;
     }
 
     public override void OnException(ExceptionContext context)

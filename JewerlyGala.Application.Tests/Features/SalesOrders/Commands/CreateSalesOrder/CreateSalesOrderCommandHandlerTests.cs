@@ -26,7 +26,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
 
             var order = new SalesOrder
             {
-                Id = Guid.NewGuid(),
+                Id = Guid.Empty,
                 IdCustomer = command.IdCustomer,
                 Date = command.Date,
                 PaymentTerms = "",

@@ -11,10 +11,10 @@ namespace JewerlyGala.Infrastructure.Repositories.Sales
 
         public async Task<Guid> CreateAsync()
         {
-            if(Order.Id != Guid.Empty)
-            {
-                throw new InvalidOperationException(nameof(Order.Id));
-            }
+            //if(Order.Id != Guid.Empty)
+            //{
+            //    throw new InvalidOperationException(nameof(Order.Id));
+            //}
 
             await dbContext.SalesOrders.AddAsync(Order);
 
@@ -46,6 +46,7 @@ namespace JewerlyGala.Infrastructure.Repositories.Sales
             var order_ = await dbContext.SalesOrders
                 .Include(e => e.CustomerNavigation)
                 .Include(e => e.SaleOrderLinesNavigation)
+                .Include(e => e.PaymentsNavigation).ThenInclude(e => e.Account)
                 .FirstOrDefaultAsync(e => e.Id == idsalesOrder);
 
 

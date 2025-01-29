@@ -3,12 +3,16 @@ using JewerlyGala.Application.Features.Customers.Commands.UpdateCustomer;
 using JewerlyGala.Application.Features.Customers.DTOs;
 using JewerlyGala.Application.Features.Customers.Queries;
 using JewerlyGala.Application.Features.Customers.Queries.GetAllCustomer;
+using JewerlyGala.Domain.Constans;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace JewerlyGala.API.Controllers
 {
+    //[Authorize(Roles = UserRoles.Admin)]
     public class CustomerController : ApiControllerBase
     {
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPost]
         public async Task<ActionResult<Guid>> Create(CreateCustomerCommand command)
         {
@@ -32,6 +36,7 @@ namespace JewerlyGala.API.Controllers
             return Ok(customer);
         }
 
+        [Authorize(Roles = UserRoles.Admin)]
         [HttpPatch("{id}")]
         public async Task<ActionResult> Update(Guid id, UpdateCustomerCommand command)
         {

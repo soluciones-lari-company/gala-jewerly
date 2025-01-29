@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using JewerlyGala.Domain.Exceptions;
-using Microsoft.IdentityModel.Tokens;
 using JewerlyGala.Domain.Repositories;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.ConfirmSaleOrder
@@ -29,24 +28,19 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.ConfirmSaleOrder
                 throw new NotFoundException("sales order not found");
             }
 
-            if (salesOrderRepository.Order.PaymentTerms.IsNullOrEmpty() || salesOrderRepository.Order.PaymentMethod.IsNullOrEmpty())
+            if (salesOrderRepository.Order.PaymentsNavigation.Count <= 0)
             {
-                throw new InvalidParamException("Please add payment information to this order first");
+                throw new InvalidOperationException("Please add payment information to this order first");
             }
 
             if(salesOrderRepository.Order.CanceledAt != null)
             {
-                throw new NotFoundException("sales order canceled");
+                throw new InvalidOperationException("sales order canceled");
             }
 
             if (salesOrderRepository.Order.ConfirmedAt != null)
             {
-                throw new NotFoundException("sales order has been confirmed");
-            }
-
-            if (salesOrderRepository.Order.Total <= 0 || salesOrderRepository.Order.SaleOrderLinesNavigation.Count() == 0)
-            {
-                throw new InvalidParamException("Please add items to this order first");
+                throw new InvalidOperationException("sales order has been confirmed");
             }
 
             salesOrderRepository.Order.ConfirmedAt = DateTime.Now;
