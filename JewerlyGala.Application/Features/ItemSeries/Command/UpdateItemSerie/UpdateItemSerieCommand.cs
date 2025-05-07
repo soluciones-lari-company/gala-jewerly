@@ -1,5 +1,6 @@
 ﻿
 using AutoMapper;
+using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Domain.Entities;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.ItemSeries.Command.UpdateItemSerie
 {
+    [Authorize]
     public class UpdateItemSerieCommand : IRequest
     {
         public Guid Id { get; set; } = Guid.Empty;
@@ -18,7 +20,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.UpdateItemSerie
         public Guid SupplierId { get; set; }
         public string PurchaseUnitMeasure { get; set; } = default!;
         public decimal PurchasePriceByUnitMeasure { get; set; }
-        public DateOnly PurchaseDate { get; set; }
+        public DateTime PurchaseDate { get; set; }
         public decimal PurchaseUnitPrice { get; set; }
         public int SalePercentRentability { get; set; }
         public decimal SaleUnitPrice { get; set; }
@@ -54,7 +56,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.UpdateItemSerie
                 SupplierId = request.SupplierId,
                 PurchaseUnitMeasure = request.PurchaseUnitMeasure,
                 PurchasePriceByUnitMeasure = request.PurchasePriceByUnitMeasure,
-                PurchaseDate = request.PurchaseDate,
+                PurchaseDate = DateOnly.FromDateTime(request.PurchaseDate),
                 PurchaseUnitPrice = request.PurchaseUnitPrice,
                 SalePercentRentability = request.SalePercentRentability,
                 SaleUnitPrice = request.SaleUnitPrice,

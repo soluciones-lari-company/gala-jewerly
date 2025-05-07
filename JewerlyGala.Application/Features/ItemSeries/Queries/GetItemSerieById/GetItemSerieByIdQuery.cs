@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Application.Features.ItemSeries.DTOs;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
@@ -6,6 +7,7 @@ using MediatR;
 
 namespace JewerlyGala.Application.Features.ItemSeries.Queries.GetItemSerieById
 {
+    [Authorize]
     public class GetItemSerieByIdQuery : IRequest<ItemSerieDTO>
     {
         public Guid Id { get; set; }

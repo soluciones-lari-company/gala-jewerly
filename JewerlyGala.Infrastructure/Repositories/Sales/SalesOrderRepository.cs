@@ -60,6 +60,12 @@ namespace JewerlyGala.Infrastructure.Repositories.Sales
                 return true;
             }
         }
+
+        public async Task<ICollection<SalesOrder>> GetOpenAsync()
+        {
+            var orders = await dbContext.SalesOrders.Include(e => e.CustomerNavigation).Where(e => e.CanceledAt == null && e.ConfirmedAt == null).ToListAsync();
+            return orders;
+        }
         #region oldcode
         //public async Task<int> AddLineAsync(Guid idsalesOrder, SaleOrderLine line)
         //{

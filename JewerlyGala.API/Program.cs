@@ -27,7 +27,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 
 //app.UseMiddleware<ErrorHandlingMiddle>();
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.UseSerilogRequestLogging();
 
@@ -40,8 +40,10 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseOpenApi();
+    app.UseSwaggerUI(c => {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Gala Joyeria API");
+    });
 }
 
 var scope = app.Services.CreateScope();
@@ -54,7 +56,9 @@ app.UseHttpsRedirection();
 
 app.MapGroup("api/identity").MapIdentityApi<User>();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

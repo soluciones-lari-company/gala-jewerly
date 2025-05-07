@@ -13,6 +13,7 @@ namespace JewerlyGala.Domain.Repositories.Sales
         Task<Guid> CreateAsync();
         Task<bool> UpdateAsync();
         Task<ICollection<SalesOrder>> GetAllAsync();
+        Task<ICollection<SalesOrder>> GetOpenAsync();
 
         //Task<Guid> CreateAsync(SalesOrder order);
         //Task<SalesOrder?> GetByIdAsync(Guid idsalesOrder);

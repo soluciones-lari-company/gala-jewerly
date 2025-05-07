@@ -9,7 +9,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
     public class CreateSalesOrderCommand : IRequest<Guid>
     {
         public Guid IdCustomer { get; set; }
-        public DateOnly Date { get; set; }
+        public DateTime Date { get; set; }
         public string Zone { get; set; } = default!;
     }
 
@@ -30,7 +30,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
             salesOrderRepository.Order = new SalesOrder
             {
                 IdCustomer = request.IdCustomer,
-                Date = request.Date,
+                Date = DateOnly.FromDateTime(request.Date),
                 //DueDate = request.DueDate,
                 PaymentTerms = "",
                 PaymentMethod = "",

@@ -1,11 +1,17 @@
 ﻿using JewerlyGala.API.Middlewares;
+using JewerlyGala.API.Services;
+using JewerlyGala.Application.Common.Interfaces;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
-using NSwag.Generation.Processors.Security;
 using Serilog;
 using System.Text.Json.Serialization;
+using NSwag;
+using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+
 
 namespace JewerlyGala.API.Extensions
 {
@@ -14,46 +20,53 @@ namespace JewerlyGala.API.Extensions
         public static void AddPresentation(this WebApplicationBuilder builder)
         {
 
-            builder.Services.AddSwaggerGen(static c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo
-                {
-                    Version = "v1",
-                    Title = "Joyeria Gala Servicios API",
-                    Description = "API for manegement Gala Joyeria",
-                    TermsOfService = new Uri("https://example.com/terms"),
-                    Contact = new OpenApiContact
-                    {
-                        Name = "Example Contact",
-                        Url = new Uri("https://example.com/contact")
-                    },
-                    License = new OpenApiLicense
-                    {
-                        Name = "Example License",
-                        Url = new Uri("https://example.com/license")
-                    }
-                });
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement()
-                {
-                    {
-                        new OpenApiSecurityScheme {
-                            Reference = new OpenApiReference {
-                                Id = "bearerAuth",
-                                    Type = ReferenceType.SecurityScheme
-                            }
-                        },
-                        new List < string > ()
-                    }
-                });
-            });
+            //builder.Services.AddSwaggerGen(static c =>
+            //{
+            //    c.SwaggerDoc("v1", new OpenApiInfo
+            //    {
+            //        Version = "v1",
+            //        Title = "Joyeria Gala Servicios API",
+            //        Description = "API for manegement Gala Joyeria",
+            //        TermsOfService = new Uri("https://example.com/terms"),
+            //        Contact = new OpenApiContact
+            //        {
+            //            Name = "Example Contact",
+            //            Url = new Uri("https://example.com/contact")
+            //        },
+            //        License = new OpenApiLicense
+            //        {
+            //            Name = "Example License",
+            //            Url = new Uri("https://example.com/license")
+            //        }
+            //    });
+            //    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+            //    {
+            //        {
+            //            new OpenApiSecurityScheme {
+            //                Reference = new OpenApiReference {
+            //                    Id = "bearerAuth",
+            //                        Type = ReferenceType.SecurityScheme
+            //                }
+            //            },
+            //            new List < string > ()
+            //        }
+            //    });
+            //});
 
-            builder.Services.AddOpenApiDocument(static (configure, serviceProvider) =>
+            // Customise default API behaviour
+            builder.Services.Configure<ApiBehaviorOptions>(options =>
+                options.SuppressModelStateInvalidFilter = true);
+
+            builder.Services.AddOpenApiDocument((configure, serviceProvider) =>
             {
                 var fluentValidationSchemaProcessor = serviceProvider.CreateScope().ServiceProvider.GetRequiredService<FluentValidationSchemaProcessor>();
                 //// Add the fluent validations schema processor
-                //configure.SchemaProcessors.Add(fluentValidationSchemaProcessor);
+                configure.SchemaSettings.SchemaProcessors.Add(fluentValidationSchemaProcessor);
 
                 configure.Title = "Joyeria Gala API";
+                configure.Version = "v1";
+                configure.Description = "API for manegement Gala Joyeria";
+
                 configure.AddSecurity("JWT", Enumerable.Empty<string>(), new NSwag.OpenApiSecurityScheme()
                 {
                     Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
@@ -69,17 +82,24 @@ namespace JewerlyGala.API.Extensions
                 options.AddPolicy(name: "Policy1",
                                   policy =>
                                   {
-                                      policy.WithOrigins("http://localhost:5173",
-                                                          "http://www.contoso.com")
-                                      .AllowAnyHeader()
-                                              .AllowAnyMethod();
+                                      //policy.WithOrigins("http://localhost:5173",
+                                      //                    "http://www.contoso.com", "https://gala-joyeria.com")
+                                      //.AllowAnyHeader()
+                                      //        .AllowAnyMethod();
+
+                                      policy.AllowAnyOrigin()
+                                       .AllowAnyMethod()
+                                       .AllowAnyHeader();
                                   });
 
             });
 
+            builder.Services.AddAuthorization();
             builder.Services.AddAuthentication();
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
+
+            builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             // Add services to the container.
 
@@ -98,7 +118,7 @@ namespace JewerlyGala.API.Extensions
 
             builder.Services.AddOptions<BearerTokenOptions>(IdentityConstants.BearerScheme).Configure(options =>
             {
-                options.BearerTokenExpiration = TimeSpan.FromMinutes(10);
+                options.BearerTokenExpiration = TimeSpan.FromDays(12);
             });
 
             //builder.Services.AddScoped<ErrorHandlingMiddle>();

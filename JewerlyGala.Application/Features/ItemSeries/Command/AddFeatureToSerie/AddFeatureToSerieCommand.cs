@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using AutoMapper.Features;
+using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Application.Features.ItemSeries.Common;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
@@ -8,10 +8,12 @@ using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.ItemSeries.Command.AddFeatureToSerie
 {
+    [Authorize]
     public class AddFeatureToSerieCommand: IRequest
     {
         public Guid SerieId { get; set; }
-        public ItemSerieFeatures Feature { get; set; }
+        public string FeatureName { get; set; } = default!;
+        public string Value { get; set; } = default!;
     }
 
     public class AddFeatureToSerieCommandHandler(
@@ -29,9 +31,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.AddFeatureToSerie
 
             if (!existsSerie) throw new NotFoundException("Serie not found");
 
-            if(request.Feature == null) throw new ArgumentNullException("feature and value invalid");
-
-            await LinkItemSerieToFeatureAndValue(request.SerieId, request.Feature.FeatureName, request.Feature.Value);
+            await LinkItemSerieToFeatureAndValue(request.SerieId, request.FeatureName, request.Value);
         }
 
         private async Task LinkItemSerieToFeatureAndValue(Guid serieIdCreated, string featureName, string value)

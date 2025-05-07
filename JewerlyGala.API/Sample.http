@@ -2,10 +2,10 @@
 @host = https://localhost
 @port = 7153
 
-@JewerlyGala.API_HostAddress = https://localhost:7153
+@JewerlyGala.API_HostAddress = https://api-v1.gala-joyeria.com
 @refres = CfDJ8IAPeVFeqZlCoDkau0TXiv2tv8XHorDqlc3p1q3wOS6LHLAmsvwZu6NDqL7e5_RF5gX70YSmVue8BZk3_gec945OOAiOQMDQwH7zPBfpgnLeVQh8gFe9xxeExfKCJ48dOEjq3k7ODogD5UGxG181-cowElIuujzXiRzhjhx01G27QGuoUMvzcFhrTljgnf7lLuOakQ0AhTh4E_uGERxYKqLkIkcq-Pqy98wpncM2Mzl05Gkngp32It0iyLs4pAd6XbshxCPFKIEpr6CoqZup8JeDjbU00lWs0x7VkvIu0xTgF0l9PG8kDAvcWLOjsO4GdI94FzrGLQ6buuj4-zstpbE3ADM8dOlhv03CSDdUs9w9KGWtFFb4xuESYOM49af3jW2QJLJUOl3sJRjPs_GYxyoJ4VSya5EDCgB0tL75LRe5fnBhmo3plCJSXFF7p2buPkY8Cw5mIFiGGVQKz3PN6MIyV9ZZm89LnTivxHaDxHfmffJbsCiJ8JCm-NhsnSZl5vJiP9X12SGQq9WHtwiCnzBWnTeL3zKpNDAIxjHouKkU1q34eLpUtxwQ5Eri6M7YRQoY-hq1fnoNsC86czZuDk0BOwWPw0r0tsp1P49E52V1CdPDIkI97qMu5tolwzgRK2dRKPsqH4Nqvyn3iE_bOUW3U8yJQpko_mcaghuWlYRECer6kMwnDlE9byCGtR3ql_9IYRGirhC_3vjT0MFFMKsBYA_VR0uc-6eouEdn3SVsrHlStD7GdFvQc_iPm2sZDnH3OHMkEc7ONJ0DF9Q9G-lHNxO98YbEEpp3VqcvIycd
 
-@token = CfDJ8IAPeVFeqZlCoDkau0TXiv1KnKKlezMD6tmfZQITLRhaS0KdnZjiuU3j3OHrHTGwgOYiMIVX66vTNjxVVHYq4Zoxxpxraav_1GGGpqG2Trj6ffDcnH1YG2Y3MkgkmHT9whmxqpXI6NP2NXVbCSkfKGRVQCTJFh0SUB7KVERbELV8t0m6bHLpn70h3_L2Jrdn_vT7ep3P5VlZ8ed0Q5wC4MOgTdbD0IFYnVy-Trknw1oexE72ooBo2ODEsWoi7hnEI4pLB3uGtwjIVYvd0tMMTFoRkbe2UyMa87_kvI7GP7slTtSNrdqANemyNEygFKX44cDy3xgwjVcqQ_FCll3AU4Z23Rg1lDhMQEFbwOype270BZTLF-brT3GLeyNAFOTWbd1HRjd1vo9c1WT1-Ezb0QKUQBlcsLesGsj930S8LGVKawrosigvEEBy1KIe8-i1fy-EvQIUaIEAFwlYvgJnZeWFmX0wZqGsuN9a5X8Wv6wHQAlWb-oYpyAtmITkrPmyKYXLuC2TIWUqhv96CMAWUagBoQoWSkpNSqTG6gLuS-ajHg7GZGjpeBKD8-Cq42N-Gb8W_MDWn5pj_OropRyQ0tDtiVn241vq5cmi8vrFD0pBUxtz2rWgLaaFPNQPPJMHt8nnvX_QHpNnVjVPpoCWB_l-QwcIHamAKECRz_yeubvyppt9ugfD-velsTQsxGqK17Nsj8zcMfqh6XvuHCJCmW6HWy-5pWrarAkhB2SV77NMhXs2meOCezyI-LIU13orDj3n3V2Uxz1B2KMm1Lty9LZJ2DlgiZWQ9JkqqlyCRT0t
+@token = CfDJ8IAPeVFeqZlCoDkau0TXiv1iHMbQAIojmQNgjgXpRweFhOcS90LqtknD7Oiqf6BXbXyu8zamT_-7O6gmFLu3wNrIV0rkXEQE4GmrqXxLlXfDnvPdBbL8VdxBn03KkIbmFnnXW6_HZGhviwmxCkhoDIBWkvykwDU-b---u1qXhhXyqca7A8qELYE5UfLGPuwvgUAMGB94LN_2pnj0cgNl-JjS9aBsXFbg_BQXZXmX1DVn_KMmXOB_bK_PhJmApT1dMf6tMgQBj2v7qOoC8Y3hMDkMLTlK5wECgGzHGL19xo3pSNhJ9XmWrH3SqgZCbDbIGF2h5bBo0xp_bI09zCdIZeZzcpvKQiuUizKS2zYK1osmkAFY9-9T313xu_LbtVmfmjvgguRsSPzPpjolRztWsorAN567F0csNZaXROQbrUTLTb8CoLyODgfqLz3dTG3vL1C0QJSskj_4DW5oZhRjEv5CZmvZEyJmPn3l0WUDKzlXFmNS5WiQ15HLV12CYX7DctpF9g-LlgkPeq8QefPNeBZ0eiJhXWOFULl42sB8g_wA9U9T3o5aKTsNmVWWTPBz-poZPEe21WTHepGckGX8uIueOjSc70xkodlXLRhjBnQMtXSQ943q-eOvRtVwCY5nWhczoRMS6YwF6CBuB9YfZnKsVemOrsq1D-leMBS2ORjFCLHiEjyEiQfDqLTVezQG3TVzkP-pnadiK9N8fMYd_jQAzFxq0seUEnyh7pHB9tnot2yJMF90_VwI6N7LrfGc8jwaUP_QCcRyQaKtfmbi9BbqsJBlmUJ6FDleQTMK8cjS
 
 POST {{JewerlyGala.API_HostAddress}}/api/identity/register
 Content-Type: application/json
@@ -90,7 +90,6 @@ Content-Type: application/json
 
 ###
 
-
 POST {{JewerlyGala.API_HostAddress}}/api/identity/user-role
 Content-Type: application/json
 Authorization: Bearer {{token}}
@@ -100,8 +99,6 @@ Authorization: Bearer {{token}}
 }
 
 ###
-
-
 
 POST {{JewerlyGala.API_HostAddress}}/api/ItemSerie
 Content-Type: application/json
@@ -191,16 +188,19 @@ Authorization: Bearer {{token}}
 }
 
 ###
+
 GET {{JewerlyGala.API_HostAddress}}/api/ItemSerie/fb3883d9-0fd5-4466-b54d-68f77b3b0113 
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 ###
+
+
 POST {{JewerlyGala.API_HostAddress}}/api/Customer/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 {
-  "name": "Cliente de pruebas 2",
+  "name": "",
   "phoneNumber": "1111111111",
   "email": "NA",
   "discount": 0
@@ -223,7 +223,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 {
   "customerId": "b4bcc000-6561-4c38-8921-0f4a7c867c45",
-  "name": "Maricela Flores",
+  "name": "Cliente de pruebassssssss",
   "phoneNumber": "1111111111",
   "email": "NA",
   "discount": 0

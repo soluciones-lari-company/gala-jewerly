@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using FluentAssertions;
 using JewerlyGala.Domain.Entities;
+using Azure.Core;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder.Tests
 {
@@ -20,7 +21,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
             var command = new CreateSalesOrderCommand
             {
                 IdCustomer = Guid.NewGuid(),
-                Date = new DateOnly(2024, 12, 6),
+                Date = new DateTime(2024, 12, 6),
                 Zone = "Lira"
             };
 
@@ -28,7 +29,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
             {
                 Id = Guid.Empty,
                 IdCustomer = command.IdCustomer,
-                Date = command.Date,
+                Date = DateOnly.FromDateTime(command.Date),
                 PaymentTerms = "",
                 PaymentMethod = "",
                 PaymentConditions = "",
@@ -63,7 +64,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.CreateSalesOrder
             var command = new CreateSalesOrderCommand
             {
                 IdCustomer = Guid.NewGuid(),
-                Date = new DateOnly(2024, 12, 6),
+                Date = new DateTime(2024, 12, 6),
                 Zone = "Lira"
             };
 

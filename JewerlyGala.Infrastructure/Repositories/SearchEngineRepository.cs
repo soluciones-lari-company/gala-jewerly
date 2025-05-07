@@ -17,6 +17,12 @@ namespace JewerlyGala.Infrastructure.Repositories
                                                                 Feature = t03.FeatureName,
                                                                 Value = t04.ValueName
                                                             };
+
+        public async Task<ICollection<string>> GetFeaturesAsync()
+        {
+            return await dbContext.ItemFeatures.Select(a => a.FeatureName).ToListAsync();
+        }
+
         public async Task<ICollection<Guid>> GetSeriesIdsByFeatureValue(string feature, string value)
         {
             var results = await query.Where( e=> e.Feature == feature && e.Value == value).Select(e => e.SerieId).ToListAsync();
@@ -40,6 +46,11 @@ namespace JewerlyGala.Infrastructure.Repositories
 
                 return results;
             }
+        }
+
+        public async Task<ICollection<string>> GetValuesAsync()
+        {
+            return await dbContext.ItemFeatureValues.Select(a => a.ValueName).ToListAsync();
         }
     }
 }

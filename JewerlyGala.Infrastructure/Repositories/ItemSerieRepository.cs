@@ -77,7 +77,10 @@ namespace JewerlyGala.Infrastructure.Repositories
 
         public async Task<ItemSerie?> GetBySerieCodeAsync(string serieCode)
         {
-            return await dbContext.ItemSeries.FirstOrDefaultAsync(e => e.SerieCode == serieCode);
+            return await dbContext.ItemSeries
+                .Include(e => e.SupplierNav)
+                .Include(e => e.ItemMaterialNav)
+                .FirstOrDefaultAsync(e => e.SerieCode.Trim().ToLower() == serieCode);
         }
 
         public async Task<ICollection<QItemSerieFeatureValues>> GetFeaturesValues(Guid id)

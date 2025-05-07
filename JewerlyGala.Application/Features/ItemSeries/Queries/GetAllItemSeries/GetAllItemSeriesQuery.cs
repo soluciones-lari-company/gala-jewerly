@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
+using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Application.Features.ItemSeries.Common;
 using JewerlyGala.Application.Features.ItemSeries.DTOs;
 using JewerlyGala.Domain.Repositories;
 using MediatR;
-using Microsoft.Extensions.FileSystemGlobbing.Internal;
 using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.ItemSeries.Queries.GetAllItemSeries
 {
+    [Authorize]
     public class GetAllItemSeriesQuery : IRequest<IEnumerable<ItemSerieDTO>>
     {
         public List<ItemSerieFeatures> FeaturesAndValues { get; set; } = [];

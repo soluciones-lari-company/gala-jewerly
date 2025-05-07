@@ -1,9 +1,11 @@
-﻿using JewerlyGala.Application.Interfaces;
+﻿using JewerlyGala.Application.Common.Interfaces;
+using JewerlyGala.Application.Interfaces;
 using JewerlyGala.Domain.Identity;
 using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Domain.Repositories.Accouting;
 using JewerlyGala.Domain.Repositories.Sales;
 using JewerlyGala.Infrastructure.Authorization;
+using JewerlyGala.Infrastructure.Identity;
 using JewerlyGala.Infrastructure.Persistence;
 using JewerlyGala.Infrastructure.Persistence.Intereptors;
 using JewerlyGala.Infrastructure.Repositories;
@@ -60,6 +62,7 @@ namespace JewerlyGala.Infrastructure.Extensions
 
             // add extra services
             services.AddScoped<IDateTime, DateTimeService>();
+            services.AddTransient<IIdentityService, IdentityService>();
 
             // add seeders data
             services.AddScoped<IGalaSeeder, GalaSeeder>();

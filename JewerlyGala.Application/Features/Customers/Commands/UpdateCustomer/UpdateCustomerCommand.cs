@@ -1,4 +1,5 @@
-﻿using JewerlyGala.Domain.Entities;
+﻿using JewerlyGala.Application.Common.Security;
+using JewerlyGala.Domain.Entities;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
@@ -6,6 +7,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.Customers.Commands.UpdateCustomer
 {
+    [Authorize]
     public class UpdateCustomerCommand : IRequest
     {
         public Guid CustomerId { get; set; }

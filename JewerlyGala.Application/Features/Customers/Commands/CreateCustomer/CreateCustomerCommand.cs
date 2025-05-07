@@ -2,9 +2,12 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using JewerlyGala.Domain.Entities;
+using JewerlyGala.Application.Common.Security;
+using JewerlyGala.Domain.Constans;
 
 namespace JewerlyGala.Application.Features.Customers.Commands.CreateCustomer
 {
+    [Authorize(Roles = UserRoles.Admin)]
     public class CreateCustomerCommand : IRequest<Guid>
     {
         public string Name { get; set; } = default!;

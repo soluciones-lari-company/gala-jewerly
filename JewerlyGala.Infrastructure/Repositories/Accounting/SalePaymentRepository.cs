@@ -19,7 +19,7 @@ namespace JewerlyGala.Infrastructure.Repositories.Accounting
         public async Task<Guid> CreateAsync()
         {
             await dbContext.SalePayments.AddAsync(SalePayment);
-
+            await dbContext.SaveChangesAsync();
             return SalePayment.Id;
         }
 
@@ -48,6 +48,7 @@ namespace JewerlyGala.Infrastructure.Repositories.Accounting
         public void Remove(SalePayment payment)
         {
             dbContext.SalePayments.Remove(payment);
+            dbContext.SaveChanges();
         }
 
         public void RemoveRange(ICollection<SalePayment> payments)

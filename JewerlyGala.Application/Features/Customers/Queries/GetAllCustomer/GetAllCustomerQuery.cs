@@ -4,9 +4,11 @@ using JewerlyGala.Domain.Repositories.Sales;
 using Microsoft.Extensions.Logging;
 using AutoMapper;
 using JewerlyGala.Application.Features.Customers.DTOs;
+using JewerlyGala.Application.Common.Security;
 
 namespace JewerlyGala.Application.Features.Customers.Queries.GetAllCustomer
 {
+    [Authorize]
     public class GetAllCustomerQuery : IRequest<IEnumerable<CustomerDTO>>
     {
     }

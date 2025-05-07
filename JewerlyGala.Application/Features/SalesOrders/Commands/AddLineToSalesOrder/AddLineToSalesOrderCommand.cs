@@ -12,7 +12,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
         public Guid SalesOrderId { get; set; }
         public int NumLine { get; set; }
         public Guid ItemSerieId { get; set; }
-        //public string SerieCode { get; set; } = default!;
+        public string SerieCode { get; set; } = default!;
         //public string Descripcion { get; set; } = default!;
         public int Quantity { get; set; }
         //public decimal UnitPrice { get; set; }
@@ -50,7 +50,17 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
                 throw new InvalidOperationException("sales order has been confirmed");
             }
 
-            var serie = await itemSerieRepository.GetByIdAsync(request.ItemSerieId);
+            ItemSerie? serie = new ItemSerie();
+            if (request.SerieCode.Trim() != "")
+            {
+                serie = await itemSerieRepository.GetBySerieCodeAsync(request.SerieCode.Trim());
+            }
+            else
+            {
+                serie = await itemSerieRepository.GetByIdAsync(request.ItemSerieId);
+            }
+
+            
 
             if(serie == null)
             {

@@ -1,14 +1,15 @@
 ﻿using AutoMapper;
+using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Application.Features.Customers.DTOs;
 using JewerlyGala.Application.Features.ItemSeries.Queries.GetAllItemSeries;
 using JewerlyGala.Domain.Exceptions;
-using JewerlyGala.Domain.Repositories;
 using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.Customers.Queries
 {
+    [Authorize]
     public class GetCustomerByIdQuery: IRequest<CustomerDTO>
     {
         public Guid CustomerId { get; set; }

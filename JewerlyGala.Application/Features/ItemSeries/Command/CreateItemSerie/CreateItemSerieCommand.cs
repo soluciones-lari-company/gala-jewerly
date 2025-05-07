@@ -1,4 +1,5 @@
-﻿using JewerlyGala.Application.Features.ItemSeries.Common;
+﻿using JewerlyGala.Application.Common.Security;
+using JewerlyGala.Application.Features.ItemSeries.Common;
 using JewerlyGala.Domain.Entities;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.ItemSeries.Command.CreateItemSerie
 {
+    [Authorize]
     public class CreateItemSerieCommand : IRequest<Guid>
     {
         public string SerieCode { get; set; } = default!;
@@ -16,7 +18,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.CreateItemSerie
         public Guid SupplierId { get; set; }
         public string PurchaseUnitMeasure { get; set; } = default!;
         public decimal PurchasePriceByUnitMeasure { get; set; }
-        public DateOnly PurchaseDate { get; set; }
+        public DateTime PurchaseDate { get; set; }
         public decimal PurchaseUnitPrice { get; set; }
         public int SalePercentRentability { get; set; }
         public decimal SaleUnitPrice { get; set; }
@@ -58,7 +60,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.CreateItemSerie
                 SupplierId = request.SupplierId,
                 PurchaseUnitMeasure = request.PurchaseUnitMeasure,
                 PurchasePriceByUnitMeasure = request.PurchasePriceByUnitMeasure,
-                PurchaseDate = request.PurchaseDate,
+                PurchaseDate = DateOnly.FromDateTime(request.PurchaseDate),
                 PurchaseUnitPrice = request.PurchaseUnitPrice,
                 SalePercentRentability = request.SalePercentRentability,
                 SaleUnitPrice = request.SaleUnitPrice,
