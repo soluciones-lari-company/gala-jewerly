@@ -56,6 +56,9 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
                .HasColumnType("decimal(10, 2)")
                .IsRequired();
 
+            builder.Property(e => e.TypeLine)
+               .IsRequired();
+
             builder.HasOne(t => t.SaleOrderNavigation)
                 .WithMany(t => t.SaleOrderLinesNavigation)
                 .HasForeignKey(t => t.SalesOrderId);

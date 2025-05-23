@@ -9,6 +9,7 @@ using JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOrder;
 using JewerlyGala.Application.Features.SalesOrders.Commands.DeletePaymentToSO;
 using JewerlyGala.Application.Features.SalesOrders.Commands.SaleOrderStep3Payment;
 using JewerlyGala.Application.Features.SalesOrders.Commands.SetDiscountToSaleOrder;
+using JewerlyGala.Application.Features.SalesOrders.Commands.SetWorkshopCostToOrder;
 using JewerlyGala.Application.Features.SalesOrders.DTOs;
 using JewerlyGala.Application.Features.SalesOrders.Queries.GetSalesOrderById;
 using JewerlyGala.Application.Features.SalesOrders.Queries.GetSalesOrdersOpen;
@@ -120,6 +121,18 @@ namespace JewerlyGala.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
         [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(Result))]
         public async Task<ActionResult> SetDiscountToSaleOrder(Guid id, SetDiscountToSaleOrderCommand command)
+        {
+            await Mediator.Send(command);
+
+            return NoContent();
+        }
+
+        [HttpPatch("{id}/set-workshopCost")]
+        [ProducesResponseType(StatusCodes.Status204NoContent, Type = typeof(Result))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(Result))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(Result))]
+        public async Task<ActionResult> SetWorkshopCostToOrder(Guid id, SetWorkshopCostToOrderCommand command)
         {
             await Mediator.Send(command);
 

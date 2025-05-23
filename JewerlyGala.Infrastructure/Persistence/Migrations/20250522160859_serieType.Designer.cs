@@ -4,6 +4,7 @@ using JewerlyGala.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace JewerlyGala.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(JewerlyDbContext))]
-    partial class JewerlyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250522160859_serieType")]
+    partial class serieType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -445,9 +448,6 @@ namespace JewerlyGala.Infrastructure.Persistence.Migrations
 
                     b.Property<decimal>("Total")
                         .HasColumnType("decimal(10, 2)");
-
-                    b.Property<int>("TypeLine")
-                        .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
                         .HasColumnType("decimal(10, 2)");

@@ -5,6 +5,7 @@ using Moq;
 using JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOrder;
 using JewerlyGala.Domain.Entities;
 using FluentAssertions;
+using JewerlyGala.Application.Common.Interfaces;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOrder.Tests
 {
@@ -14,12 +15,14 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
         private Mock<ILogger<DeleteLineFromOrderCommandHandler>> loggerMock;
         private Mock<ISalesOrderRepository> salesOrderRepositoryMock;
         private Mock<IItemSerieRepository> itemSerieRepositoryMock;
+        private Mock<IJewerlyDbContext> dbContextMock;
 
         public DeleteLineFromOrderCommandHandlerTests()
         {
             loggerMock = new Mock<ILogger<DeleteLineFromOrderCommandHandler>>();
             salesOrderRepositoryMock = new Mock<ISalesOrderRepository>();
             itemSerieRepositoryMock = new Mock<IItemSerieRepository>();
+            dbContextMock = new Mock<IJewerlyDbContext>();
         }
 
         [Test]
@@ -97,8 +100,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             var handler = new DeleteLineFromOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             await handler.Handle(command, default);
@@ -183,8 +185,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             var handler = new DeleteLineFromOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             await handler.Handle(command, default);
@@ -231,8 +232,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             var handler = new DeleteLineFromOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<Domain.Exceptions.NotFoundException>(async () =>
@@ -274,8 +274,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             var handler = new DeleteLineFromOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -316,8 +315,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             var handler = new DeleteLineFromOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -343,8 +341,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
             var handler = new DeleteLineFromOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
 
             //act

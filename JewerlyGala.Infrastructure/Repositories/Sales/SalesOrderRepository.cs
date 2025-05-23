@@ -52,6 +52,7 @@ namespace JewerlyGala.Infrastructure.Repositories.Sales
 
             if(order_ == null)
             {
+                Order = null;
                 return false;
             }
             else

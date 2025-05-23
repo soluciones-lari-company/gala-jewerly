@@ -1,8 +1,7 @@
-﻿using Azure.Core;
+﻿using JewerlyGala.Application.Common.Interfaces;
 using JewerlyGala.Domain.Exceptions;
-using JewerlyGala.Domain.Repositories;
-using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOrder
@@ -16,81 +15,50 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.DeleteLineFromOr
 
     public class DeleteLineFromOrderCommandHandler(
         ILogger<DeleteLineFromOrderCommandHandler> logger,
-        ISalesOrderRepository salesOrderRepository,
-        IItemSerieRepository itemSerieRepository
+        IJewerlyDbContext dbContext
         ) : IRequestHandler<DeleteLineFromOrderCommand>
     {
         public async Task Handle(DeleteLineFromOrderCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation("running DeleteLineFromOrderCommandHandler");
 
-            var order = await salesOrderRepository.GetByIdAsync(request.SalesOrderId);
+            var order = await dbContext.SalesOrders
+                .Include(e => e.SaleOrderLinesNavigation)
+                .FirstOrDefaultAsync(x => x.Id == request.SalesOrderId);
 
-            if (!order)
+            SalesOrderOperations.IsOrderEditable(order);
+
+            var line = order.SaleOrderLinesNavigation.FirstOrDefault(e => e.ItemSerieId == request.ItemSerieId) ?? 
+                throw new NotFoundException("Serie no encontrada en la orden seleccionada");
+
+
+            if (request.Quantity == line.Quantity)
             {
-                throw new NotFoundException("sales order not found");
-            }
-
-            if (salesOrderRepository.Order.CanceledAt != null)
-            {
-                throw new InvalidOperationException("sales order canceled");
-            }
-
-            if (salesOrderRepository.Order.ConfirmedAt != null)
-            {
-                throw new InvalidOperationException("sales order has been confirmed");
-            }
-
-            var line = salesOrderRepository.Order.SaleOrderLinesNavigation.FirstOrDefault(e => e.ItemSerieId == request.ItemSerieId);
-
-            if(line == null)
-            {
-                throw new NotFoundException("the serie is not found into the order selected");
-            }
-
-            if(request.Quantity == line.Quantity)
-            {
-                salesOrderRepository.Order.SaleOrderLinesNavigation.Remove(line);
+                order.SaleOrderLinesNavigation.Remove(line);
             }
             else
             {
-                if(request.Quantity < line.Quantity)
+                if (request.Quantity < line.Quantity)
                 {
                     line.Quantity -= request.Quantity;
                     line.SubTotal = line.Quantity * line.UnitPrice;
-                    line.DiscountTotal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.SubTotal * (salesOrderRepository.Order.DiscountPercentaje / 100)) : 0;
+                    line.DiscountTotal = line.DiscountPercentaje > 0 ? (line.SubTotal * (line.DiscountPercentaje / 100)) : 0;
                     line.Total = line.SubTotal - line.DiscountTotal;
-                    line.UnitPriceFinal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.Total / line.Quantity) : line.UnitPrice;
+                    line.UnitPriceFinal = line.Total / line.Quantity;
                 }
             }
 
-            await UpdateOrder();
+            SalesOrderOperations.CalculateCosts(order);
 
-            await UpdateSerie(request.ItemSerieId, request.Quantity);
-        }
+            var serie = await dbContext.ItemSeries.FirstOrDefaultAsync(e =>  e.Id == line.ItemSerieId) ??
+                throw new NotFoundException("la serie no fue encontrada");
 
-        private async Task UpdateOrder()
-        {
-            salesOrderRepository.Order.SubTotal = salesOrderRepository.Order.SaleOrderLinesNavigation.Sum(e => e.SubTotal);
-            salesOrderRepository.Order.DiscountTotal = salesOrderRepository.Order.SaleOrderLinesNavigation.Sum(e => e.DiscountTotal);
-            salesOrderRepository.Order.Total = salesOrderRepository.Order.SaleOrderLinesNavigation.Sum(e => e.Total);
+            serie.QuantityCommited -= request.Quantity;
+            serie.QuantityFree = serie.Quantity - serie.QuantityCommited - serie.QuantitySold; 
 
-            await salesOrderRepository.UpdateAsync();
-        }
 
-        private async Task UpdateSerie(Guid itemSerieId, int quantity)
-        {
-            var serie = await itemSerieRepository.GetByIdAsync(itemSerieId);
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-            if (serie == null)
-            {
-                throw new NotFoundException("serie not found");
-            }
-
-            serie.QuantityCommited -= quantity;
-            serie.QuantityFree = serie.Quantity - serie.QuantityCommited - serie.QuantitySold;
-
-            await itemSerieRepository.UpdateAsync(serie.Id, serie);
         }
     }
 }

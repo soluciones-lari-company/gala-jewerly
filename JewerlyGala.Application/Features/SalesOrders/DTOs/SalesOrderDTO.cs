@@ -20,6 +20,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.DTOs
         public string Zone { get; set; } = default!;
         public DateTime? ConfirmedAt { get; set; }
         public DateTime? CanceledAt { get; set; }
+        public decimal? WorkshopCost { get; set; }
         public virtual CustomerDTO? Customer { get; set; }
         public virtual ICollection<SaleOrderLineDTO> Lines { get; set; } = [];
         public virtual ICollection<SalePaymentDTO> Payments { get; set; } = [];

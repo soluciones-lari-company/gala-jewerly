@@ -1,8 +1,9 @@
-﻿using JewerlyGala.Domain.Entities;
+﻿using JewerlyGala.Application.Common.Interfaces;
+using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Enums;
 using JewerlyGala.Domain.Exceptions;
-using JewerlyGala.Domain.Repositories;
-using JewerlyGala.Domain.Repositories.Sales;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOrder
@@ -10,132 +11,80 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
     public class AddLineToSalesOrderCommand : IRequest<int>
     {
         public Guid SalesOrderId { get; set; }
-        public int NumLine { get; set; }
-        public Guid ItemSerieId { get; set; }
         public string SerieCode { get; set; } = default!;
-        //public string Descripcion { get; set; } = default!;
         public int Quantity { get; set; }
         //public decimal UnitPrice { get; set; }
-        //public decimal SubTotal { get; set; }
-        //public decimal DiscountPercentaje { get; set; }
-        //public decimal DiscountTotal { get; set; }
-        //public decimal Total { get; set; }
-        //public decimal UnitPriceFinal { get; set; }
     }
 
     public class AddLineToSalesOrderCommandHandler(
         ILogger<AddLineToSalesOrderCommandHandler> logger,
-        ISalesOrderRepository salesOrderRepository,
-        IItemSerieRepository itemSerieRepository
+        IJewerlyDbContext dbContext
         ) : IRequestHandler<AddLineToSalesOrderCommand, int>
     {
         public async Task<int> Handle(AddLineToSalesOrderCommand request, CancellationToken cancellationToken)
         {
             logger.LogInformation("Running AddLineToSalesOrderCommand");
 
-            var order = await salesOrderRepository.GetByIdAsync(request.SalesOrderId);
+            var order = await dbContext.SalesOrders
+                .Include(e => e.SaleOrderLinesNavigation)
+                .FirstOrDefaultAsync(x => x.Id == request.SalesOrderId);
 
-            if (!order)
-            {
-                throw new NotFoundException("sales order not found");
-            }
+            SalesOrderOperations.IsOrderEditable(order);
 
-            if (salesOrderRepository.Order.CanceledAt != null)
+            var serieSelected = await dbContext.ItemSeries.FirstOrDefaultAsync(x => x.SerieCode == request.SerieCode);
+            if (serieSelected == null)
             {
-                throw new InvalidOperationException("sales order canceled");
-            }
-
-            if (salesOrderRepository.Order.ConfirmedAt != null)
-            {
-                throw new InvalidOperationException("sales order has been confirmed");
-            }
-
-            ItemSerie? serie = new ItemSerie();
-            if (request.SerieCode.Trim() != "")
-            {
-                serie = await itemSerieRepository.GetBySerieCodeAsync(request.SerieCode.Trim());
+                throw new NotFoundException("Serie no encontrada");
             }
             else
             {
-                serie = await itemSerieRepository.GetByIdAsync(request.ItemSerieId);
+                if (serieSelected.QuantityFree < request.Quantity)
+                {
+                    throw new InvalidOperationException($"La serie {serieSelected.SerieCode} dispone unicamente de {serieSelected.QuantityFree} pieza(s) para ordernar");
+                }
             }
 
-            
-
-            if(serie == null)
+            var line = order.SaleOrderLinesNavigation.FirstOrDefault(e => e.ItemSerieId == serieSelected.Id);
+            if (line == null)
             {
-                throw new NotFoundException("serie not found");
-            }
-
-            if (serie != null && serie.QuantityFree < request.Quantity)
-            {
-                throw new InvalidOperationException($"the serie {serie.SerieCode} has only {serie.QuantityFree} items available to order");
-            }
-
-            // agregar linea
-            var newLine = await AddLine(serie, request);
-            await UpdateSerie(serie, request.Quantity);
-
-            await UpdateOrder();
-
-            return newLine.Id;
-        }
-
-        private async Task UpdateSerie(ItemSerie serie, int quantity)
-        {
-            serie.QuantityCommited += quantity;
-            serie.QuantityFree = serie.Quantity - serie.QuantityCommited - serie.QuantitySold;
-
-            await itemSerieRepository.UpdateAsync(serie.Id, serie);
-        }
-
-        private async Task<SaleOrderLine> AddLine(ItemSerie serie, AddLineToSalesOrderCommand request)
-        {
-            var line = salesOrderRepository.Order.SaleOrderLinesNavigation.FirstOrDefault(e => e.ItemSerieId == serie.Id);
-            if(line == null)
-            {
+                // define new line
                 line = new SaleOrderLine();
-                line.SalesOrderId = salesOrderRepository.Order.Id;
-                line.NumLine = request.NumLine;
-                line.ItemSerieId = serie.Id;
-                line.SerieCode = serie.SerieCode;
-                line.Descripcion = serie.Description;
+                line.SalesOrderId = order.Id;
+                line.NumLine = order.SaleOrderLinesNavigation.Count() + 1;
+                line.ItemSerieId = serieSelected.Id;
+                line.SerieCode = serieSelected.SerieCode;
+                line.Descripcion = serieSelected.Description;
+                line.TypeLine = serieSelected.Type;
                 line.Quantity = request.Quantity;
-                line.UnitPrice = serie.SaleUnitPrice;
-                line.SubTotal = line.Quantity * serie.SaleUnitPrice;
-                line.DiscountPercentaje = salesOrderRepository.Order.DiscountPercentaje;
-                line.DiscountTotal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.SubTotal * (salesOrderRepository.Order.DiscountPercentaje / 100)) : 0;
+                line.UnitPrice = serieSelected.SaleUnitPrice;
+                line.SubTotal = line.Quantity * line.UnitPrice;
+                line.DiscountPercentaje = 0;
+                line.DiscountTotal = 0;
                 line.Total = line.SubTotal - line.DiscountTotal;
-                line.UnitPriceFinal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.Total / line.Quantity) : line.UnitPrice;
-
-
-                salesOrderRepository.Order.SaleOrderLinesNavigation.Add(line);
+                line.UnitPriceFinal = order.DiscountPercentaje > 0 ? (line.UnitPrice - line.UnitPrice * (line.DiscountPercentaje / 100)) : line.UnitPrice;
+                //4433 3 2 dias 4422721616 4428180729 rodrigo 6800 
+                // add new line to order
+                order.SaleOrderLinesNavigation.Add(line);
             }
             else
             {
                 line.Quantity += request.Quantity;
-                //line.UnitPrice = serie.SaleUnitPrice;
-                line.SubTotal = line.Quantity * serie.SaleUnitPrice;
-                line.DiscountPercentaje = salesOrderRepository.Order.DiscountPercentaje;
-                line.DiscountTotal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.SubTotal * (salesOrderRepository.Order.DiscountPercentaje / 100)) : 0;
+                line.SubTotal = line.Quantity * line.UnitPrice;
+                line.DiscountPercentaje = 0;
+                line.DiscountTotal = 0;
                 line.Total = line.SubTotal - line.DiscountTotal;
-                line.UnitPriceFinal = salesOrderRepository.Order.DiscountPercentaje > 0 ? (line.Total / line.Quantity) : line.UnitPrice;
+                line.UnitPriceFinal = order.DiscountPercentaje > 0 ? (line.UnitPrice - line.UnitPrice * (line.DiscountPercentaje / 100)) : line.UnitPrice;
             }
 
-            await salesOrderRepository.UpdateAsync();
+            //update quantity in serie
+            serieSelected.QuantityCommited += request.Quantity;
+            serieSelected.QuantityFree = serieSelected.Quantity - serieSelected.QuantityCommited - serieSelected.QuantitySold;
 
-            //line.Id = await salesOrderRepository.AddLineAsync(request.SalesOrderId, line);
+            SalesOrderOperations.CalculateCosts(order);
 
-            return line;
-        }
+            await dbContext.SaveChangesAsync(cancellationToken);
 
-        private async Task UpdateOrder()
-        {
-            salesOrderRepository.Order.SubTotal = salesOrderRepository.Order.SaleOrderLinesNavigation.Sum(e => e.SubTotal);
-            salesOrderRepository.Order.DiscountTotal = salesOrderRepository.Order.SaleOrderLinesNavigation.Sum(e => e.DiscountTotal);
-            salesOrderRepository.Order.Total = salesOrderRepository.Order.SaleOrderLinesNavigation.Sum(e => e.Total);
-
-            await salesOrderRepository.UpdateAsync();
+            return line.Id;
         }
     }
 }

@@ -10,7 +10,6 @@ using NSwag;
 using NSwag.Generation.Processors.Security;
 using ZymLabs.NSwag.FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 
 namespace JewerlyGala.API.Extensions
@@ -82,14 +81,13 @@ namespace JewerlyGala.API.Extensions
                 options.AddPolicy(name: "Policy1",
                                   policy =>
                                   {
-                                      //policy.WithOrigins("http://localhost:5173",
-                                      //                    "http://www.contoso.com", "https://gala-joyeria.com")
-                                      //.AllowAnyHeader()
-                                      //        .AllowAnyMethod();
+                                      policy.WithOrigins("http://localhost:5173","https://gala-joyeria.com")
+                                      .AllowAnyHeader()
+                                              .AllowAnyMethod().AllowCredentials();
 
-                                      policy.AllowAnyOrigin()
-                                       .AllowAnyMethod()
-                                       .AllowAnyHeader();
+                                      //policy.AllowAnyOrigin()
+                                      // .AllowAnyMethod()
+                                      // .AllowAnyHeader();
                                   });
 
             });

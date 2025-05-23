@@ -36,6 +36,8 @@ namespace JewerlyGala.Infrastructure.Extensions
                 .EnableSensitiveDataLogging() // allows to show details for parameters
             );
 
+            services.AddScoped<IJewerlyDbContext>(provider => provider.GetRequiredService<JewerlyDbContext>());
+
             // setup identity roles s
             services.AddIdentityApiEndpoints<User>(options =>
                 options.SignIn.RequireConfirmedAccount = true

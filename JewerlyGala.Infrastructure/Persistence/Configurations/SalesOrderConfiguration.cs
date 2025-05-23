@@ -53,6 +53,10 @@ namespace JewerlyGala.Infrastructure.Persistence.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
+            builder.Property(e => e.WorkshopCost)
+                .HasColumnType("decimal(10, 2)");
+
+            
             builder.HasOne(t => t.CustomerNavigation)
                 .WithMany(t => t.SalesOrdersNavigation)
                 .HasForeignKey(t => t.IdCustomer);

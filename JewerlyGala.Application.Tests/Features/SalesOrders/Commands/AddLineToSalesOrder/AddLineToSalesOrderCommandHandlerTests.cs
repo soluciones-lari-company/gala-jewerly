@@ -4,6 +4,7 @@ using JewerlyGala.Domain.Repositories.Sales;
 using Moq;
 using JewerlyGala.Domain.Entities;
 using FluentAssertions;
+using JewerlyGala.Application.Common.Interfaces;
 
 namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOrder.Tests
 {
@@ -13,12 +14,14 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
         private Mock<ILogger<AddLineToSalesOrderCommandHandler>> loggerMock;
         private Mock<ISalesOrderRepository> salesOrderRepositoryMock;
         private Mock<IItemSerieRepository> itemSerieRepositoryMock;
+        private Mock<IJewerlyDbContext> dbContextMock;
 
         public AddLineToSalesOrderCommandHandlerTests()
         {
             loggerMock = new Mock<ILogger<AddLineToSalesOrderCommandHandler>>();
             salesOrderRepositoryMock = new Mock<ISalesOrderRepository>();
             itemSerieRepositoryMock = new Mock<IItemSerieRepository>();
+            dbContextMock = new Mock<IJewerlyDbContext>();
         }
         [Test]
         [TestCase(0)]
@@ -29,8 +32,6 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 2
             };
             decimal subtotalOrder = 1300;
@@ -56,7 +57,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
                 Id = 1,
                 SalesOrderId = command.SalesOrderId,
                 NumLine = 0,
-                ItemSerieId = command.ItemSerieId,
+                //ItemSerieId = command.ItemSerieId,k
                 SerieCode = "A300",
                 Descripcion = "Broqueles medida 2mm en oro 10k",
                 Quantity = 5,
@@ -88,12 +89,11 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
-            itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync(serie);
+            //itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync(serie);
 
             var handler = new AddLineToSalesOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
 
             decimal disacountTotal = discountPercentaje > 0 ? (1820 * (discountPercentaje / 100)) : 0;
@@ -117,8 +117,6 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 5
             };
             var order = new SalesOrder
@@ -162,12 +160,11 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
-            itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync(serie);
+            //itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync(serie);
 
             var handler = new AddLineToSalesOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
 
             decimal disacountTotal = discountPercentaje > 0 ? (1300 * (discountPercentaje / 100)) : 0;
@@ -188,8 +185,6 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 1
             };
             var order = new SalesOrder
@@ -210,18 +205,17 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             };
             var serie = new ItemSerie
             {
-                Id = command.ItemSerieId,
+                //Id = command.ItemSerieId,
                 QuantityFree = 0
             };
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
-            itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync(serie);
+            //itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync(serie);
 
             var handler = new AddLineToSalesOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -238,8 +232,6 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 1
             };
             var order = new SalesOrder
@@ -260,12 +252,10 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             };
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(true);
             salesOrderRepositoryMock.Setup(repo => repo.Order).Returns(order);
-            itemSerieRepositoryMock.Setup(repo => repo.GetByIdAsync(command.ItemSerieId)).ReturnsAsync((ItemSerie)null);
 
             var handler = new AddLineToSalesOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<Domain.Exceptions.NotFoundException>(async () =>
@@ -283,8 +273,6 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 1
             };
             var order = new SalesOrder
@@ -308,8 +296,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             var handler = new AddLineToSalesOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -327,8 +314,6 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 1
             };
             var order = new SalesOrder
@@ -351,8 +336,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             var handler = new AddLineToSalesOrderCommandHandler(
                 loggerMock.Object,
-                salesOrderRepositoryMock.Object,
-                itemSerieRepositoryMock.Object
+                dbContextMock.Object
                 );
             //act
             var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
@@ -370,17 +354,14 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             var command = new AddLineToSalesOrderCommand
             {
                 SalesOrderId = Guid.NewGuid(),
-                ItemSerieId = Guid.NewGuid(),
-                NumLine = 1,
                 Quantity = 1
             };
 
             salesOrderRepositoryMock.Setup(repo => repo.GetByIdAsync(command.SalesOrderId)).ReturnsAsync(false);
 
             var handler = new AddLineToSalesOrderCommandHandler(
-                loggerMock.Object, 
-                salesOrderRepositoryMock.Object, 
-                itemSerieRepositoryMock.Object
+                loggerMock.Object,
+                dbContextMock.Object
                 );
 
             //act

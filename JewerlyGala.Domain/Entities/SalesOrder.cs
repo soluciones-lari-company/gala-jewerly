@@ -27,6 +27,7 @@ namespace JewerlyGala.Domain.Entities
         public string Zone { get; set; } = default!;
         public DateTime? ConfirmedAt { get; set; }
         public DateTime? CanceledAt { get; set; }
+        public decimal? WorkshopCost { get; set; }
         public virtual Customer? CustomerNavigation { get; set; }
         public virtual ICollection<SaleOrderLine> SaleOrderLinesNavigation { get; set; } = [];
         public virtual ICollection<SalePayment> PaymentsNavigation { get; set; } = [];

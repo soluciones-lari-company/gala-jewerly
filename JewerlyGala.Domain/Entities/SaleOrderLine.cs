@@ -1,4 +1,5 @@
 ﻿using JewerlyGala.Domain.Common;
+using JewerlyGala.Domain.Enums;
 namespace JewerlyGala.Domain.Entities
 {
     public class SaleOrderLine : BaseAuditableEntity
@@ -12,6 +13,7 @@ namespace JewerlyGala.Domain.Entities
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal SubTotal { get; set; }
+        public TypeSerie? TypeLine { get; set; }
         public decimal DiscountPercentaje { get; set; }
         public decimal DiscountTotal { get; set; }
         public decimal Total { get; set; }

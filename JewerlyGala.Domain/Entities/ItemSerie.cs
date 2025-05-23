@@ -1,4 +1,5 @@
 ﻿using JewerlyGala.Domain.Common;
+using JewerlyGala.Domain.Enums;
 
 namespace JewerlyGala.Domain.Entities
 {
@@ -12,6 +13,7 @@ namespace JewerlyGala.Domain.Entities
         public int QuantitySold { get; set; }
         public int QuantityCommited { get; set; }
         public int QuantityFree { get; set; }
+        public TypeSerie? Type { get; set; }
         public Guid SupplierId { get; set; }
         public string PurchaseUnitMeasure { get; set; } = default!;
         public decimal PurchasePriceByUnitMeasure { get; set; }
