@@ -9,7 +9,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
             RuleFor(v => v.SalesOrderId)
             .NotEmpty().WithMessage("Orden de venta no seleccionada");
 
-            RuleFor(v => v.SerieCode)
+            RuleFor(v => v.SerieId)
             .NotEmpty().WithMessage("Codigo de serie vacio");
 
             RuleFor(v => v.Quantity)

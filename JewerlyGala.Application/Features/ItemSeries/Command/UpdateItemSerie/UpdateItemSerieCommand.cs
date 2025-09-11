@@ -2,6 +2,7 @@
 using AutoMapper;
 using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Enums;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
 using MediatR;
@@ -24,6 +25,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.UpdateItemSerie
         public decimal PurchaseUnitPrice { get; set; }
         public int SalePercentRentability { get; set; }
         public decimal SaleUnitPrice { get; set; }
+        public TypeSerie? SerieType { get; set; }
     }
 
     public class UpdateItemSerieCommandHandler(
@@ -60,6 +62,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.UpdateItemSerie
                 PurchaseUnitPrice = request.PurchaseUnitPrice,
                 SalePercentRentability = request.SalePercentRentability,
                 SaleUnitPrice = request.SaleUnitPrice,
+                Type = request.SerieType
             };
 
             await itemSerieRepository.UpdateAsync(request.Id, serie);

@@ -5,6 +5,7 @@ using JewerlyGala.Application.Features.Customers.Commands.UpdateCustomer;
 using JewerlyGala.Application.Features.Customers.DTOs;
 using JewerlyGala.Application.Features.Customers.Queries;
 using JewerlyGala.Application.Features.Customers.Queries.GetAllCustomer;
+using JewerlyGala.Application.Features.Customers.Queries.GetCustomerPortafolio;
 using JewerlyGala.Domain.Constans;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,6 +44,18 @@ namespace JewerlyGala.API.Controllers
         public async Task<ActionResult<CustomerDTO>> GetById(Guid id)
         {
             var customer = await Mediator.Send(new GetCustomerByIdQuery() { CustomerId = id });
+            return Ok(customer);
+        }
+
+        [HttpGet("portafolio/{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CustomerDTO))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult<CustomerDTO>> GetCustomerPortafolio(Guid id)
+        {
+            var customer = await Mediator.Send(new GetCustomerPortafolioQuery() { CustomerId = id });
             return Ok(customer);
         }
 

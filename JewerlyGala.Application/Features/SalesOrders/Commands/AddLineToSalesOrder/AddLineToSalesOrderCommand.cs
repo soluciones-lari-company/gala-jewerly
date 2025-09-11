@@ -11,7 +11,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
     public class AddLineToSalesOrderCommand : IRequest<int>
     {
         public Guid SalesOrderId { get; set; }
-        public string SerieCode { get; set; } = default!;
+        public Guid SerieId { get; set; } = default!;
         public int Quantity { get; set; }
         //public decimal UnitPrice { get; set; }
     }
@@ -31,7 +31,7 @@ namespace JewerlyGala.Application.Features.SalesOrders.Commands.AddLineToSalesOr
 
             SalesOrderOperations.IsOrderEditable(order);
 
-            var serieSelected = await dbContext.ItemSeries.FirstOrDefaultAsync(x => x.SerieCode == request.SerieCode);
+            var serieSelected = await dbContext.ItemSeries.FirstOrDefaultAsync(x => x.Id == request.SerieId);
             if (serieSelected == null)
             {
                 throw new NotFoundException("Serie no encontrada");

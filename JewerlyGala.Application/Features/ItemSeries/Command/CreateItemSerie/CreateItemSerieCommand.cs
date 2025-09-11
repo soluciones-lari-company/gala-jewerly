@@ -1,6 +1,7 @@
 ﻿using JewerlyGala.Application.Common.Security;
 using JewerlyGala.Application.Features.ItemSeries.Common;
 using JewerlyGala.Domain.Entities;
+using JewerlyGala.Domain.Enums;
 using JewerlyGala.Domain.Exceptions;
 using JewerlyGala.Domain.Repositories;
 using MediatR;
@@ -23,6 +24,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.CreateItemSerie
         public int SalePercentRentability { get; set; }
         public decimal SaleUnitPrice { get; set; }
         public ICollection<ItemSerieFeatures> FeaturesAndValues { get; set; } = [];
+        public TypeSerie? SerieType { get; set; }
     }
 
     public class CreateItemSerieCommandHandler(
@@ -64,6 +66,7 @@ namespace JewerlyGala.Application.Features.ItemSeries.Command.CreateItemSerie
                 PurchaseUnitPrice = request.PurchaseUnitPrice,
                 SalePercentRentability = request.SalePercentRentability,
                 SaleUnitPrice = request.SaleUnitPrice,
+                Type = request.SerieType,
             };
 
             var serieIdCreated = await itemSerieRepository.CreateAsync(newSerie);

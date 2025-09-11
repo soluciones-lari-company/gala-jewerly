@@ -45,7 +45,7 @@ namespace JewerlyGala.Infrastructure.Repositories
             var series = await dbContext.ItemSeries
                     .Include(e => e.ItemMaterialNav)
                     .Include(e => e.SupplierNav)
-                    .OrderBy(e => e.Created).ToListAsync();
+                    .OrderBy(e => e.SerieCode).ToListAsync();
 
             return series;
         }
@@ -65,7 +65,7 @@ namespace JewerlyGala.Infrastructure.Repositories
                 var series = await dbContext.ItemSeries
                     .Include(e => e.ItemMaterialNav)
                     .Include(e => e.SupplierNav)
-                    .Where(e => ids.Contains(e.Id)).OrderBy(e => e.Created).ToListAsync();
+                    .Where(e => ids.Contains(e.Id)).OrderBy(e => e.SerieCode).ToListAsync();
 
                 return series;
             }

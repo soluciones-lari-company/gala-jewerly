@@ -8,6 +8,7 @@ using JewerlyGala.Application.Features.ItemSeries.Queries.GetAllItemSeries;
 using JewerlyGala.Application.Features.ItemSeries.Queries.GetFeaturesValues;
 using JewerlyGala.Application.Features.ItemSeries.Queries.GetItemSerieById;
 using JewerlyGala.Application.Features.ItemSeries.Queries.GetItemSerieBySerieCode;
+using JewerlyGala.Application.Features.ItemSeries.Queries.GetSeriesBySerieCode;
 using JewerlyGala.Domain.Constans;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,6 +45,18 @@ namespace JewerlyGala.API.Controllers
             var model = await Mediator.Send(command);
             return Ok(model);
         }
+
+        [HttpPost("get-alll-by-seriecode")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<ItemSeriePublicDTO>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(ProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized, Type = typeof(ProblemDetails))]
+        public async Task<ActionResult<IEnumerable<ItemSeriePublicDTO>>> GetSeriesBySerieCode([FromBody] GetSeriesBySerieCodeQuery command)
+        {
+            var model = await Mediator.Send(command);
+            return Ok(model);
+        }
+
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK,Type = typeof(ItemSerieDTO))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]

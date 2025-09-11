@@ -12,5 +12,6 @@ namespace JewerlyGala.Application.Features.Customers.DTOs
         public DateOnly? LastSale { get; set; }
         public DateOnly? LastPayment { get; set; }
         public int? Discount { get; set; }
+
     }
 }
